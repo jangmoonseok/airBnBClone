@@ -1,2 +1,2 @@
-# airBnBClone
+# AirBnBClone
 AirBnB Clone Coding
