@@ -1,0 +1,401 @@
+@charset "UTF-8";
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
+a{
+	color: black;
+}
+ a:hover, a:active {text-decoration: none; color:black;}
+ 
+ button{
+ 	border: none;
+ 	background: transparent;
+ }
+ 
+ /* header */
+ header{
+ 	padding: 20px 150px;
+ }
+ 
+ .headerTop{
+ 	display: flex;
+ 	justify-content: space-between;
+	align-items: center;
+
+ }
+ 
+ .logoContainer a{
+ 	display: flex;
+ 	align-items: center;
+ 	font-weight: bold;
+ 	color: black;
+ 	text-decoration: none;
+ 	outline: none;
+ }
+ 
+ .userMenu{
+ 	border: none;
+ 	background: transparent;
+ 	border: 1px solid gray;
+ 	border-radius: 50px;
+ 	display: flex;
+ 	justify-content : center;
+ 	align-items: center;
+ 	padding: 5px 10px;
+ }
+ 
+#userMenu_list{
+ 	background:white;
+	position: absolute;
+	right: 50px;
+	top:80px;
+	z-index:1;
+	border-radius: 10px;
+	width: 200px;
+	border:5px solid black;
+ }
+
+.userMenu_item{
+	margin: 10px 0;
+	padding: 10px 0;
+	font-size : 15px;
+	cursor: pointer;
+	text-align:center;
+}
+
+.headerBody{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 50px;
+	font-weight:bold;
+	margin: 30px 0;
+}
+
+ /* main */
+ main{
+ 	margin: 30px 0;
+ }
+ 
+.boardlist li{
+	padding: 10px 5px;
+	cursor: pointer;
+}
+
+.boardlist li:hover{
+	background: lightgray;
+}
+
+#help_loginForm{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px 50px;
+	margin: 50px 150px;
+	border: 1px solid gray;
+	border-radius: 30px;
+}
+
+#help_loginForm button{
+	background: #FF385C;
+	color: white;
+	border-radius: 10px;
+	padding: 10px 50px;
+	font-weight: bold;
+	transition:all 0.3s;
+}
+
+#help_loginForm button:hover{
+	transform:scale(1.05);
+}
+
+#qnaReser{
+	margin: 20px 150px;
+	border: 1px solid gray;
+	border-radius: 30px;
+	padding: 20px;
+}
+
+#qnaReser > h2{
+	margin-left : 25px;
+	font-weight: bold;
+}
+
+#qnaReser a{
+	color: black;
+	text-decoration: none;
+ 	outline: none;
+}
+
+#qnaReser button{
+ 	position: absolute;
+ 	right: 180px;
+ 	top : 250px;
+ 	padding: 10px 20px;
+ 	border-radius: 20px;
+}
+
+#qnaBoard_list{
+	width: 100%;
+	padding: 0 25px;
+}
+
+#helpSelect_kind{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.kind{
+	margin: 0 30px;
+	cursor: pointer;
+}
+
+.kind p {
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+.modal-body span {
+	font-weight : bold;
+	font-size : 1.2em;
+}
+
+.card-link{
+	color:black;
+}
+
+
+/* footer */
+#footer{
+	background: #e3e2de;
+}
+
+#footer_list{
+	display: flex;
+	justify-content: center;
+	padding: 30px;
+}
+
+#footer_list li{
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+#footer_list ul{
+	margin: 10px 20px;
+}
+
+#footer_list h3{
+	font-weight: bold;
+	margin: 0 20px;
+	font-size:20px;
+}
+
+#footer_mark{
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+}
+
+/* SignUp Modal */
+.form-groupd {
+	margin-left : 40px;	 
+	margin-bottom : 15px;
+}
+
+.form-group input{
+	width: 300px;
+	display:inline-block;
+}
+
+.form-group input[type=radio]{
+	width: 50px;
+}
+
+.form-group label{
+	display:inline-block;
+	width:130px;
+}
+
+.form-check-label{
+	margin-left : 65px;
+	margin-bottom : 10px;
+}
+
+#findId {
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+	margin-left : 45px;
+	width : 38%;
+}
+
+#findPass{
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+	width : 38%;
+	margin-left : 10px;
+}
+
+#findId:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#findPass:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#loginId {
+	width : 80%;
+	margin-left : 45px;
+}
+
+#loginPwd {
+	width : 80%;
+	margin-left : 45px;
+}
+
+#loginBtn{
+	width : 80%;
+	height : 50px;
+	margin : 10px 45px;
+    background: #FF385C;
+    border : 1px solid white;
+    border-radius: 10px;
+}
+
+#kakaologin{
+	width : 80%;
+	height : 50px;
+	margin-top : 5px;
+	margin-left : 45px;
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+}
+
+#kakaologin:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#kakaologo{
+	float : left;
+}
+
+.hr-sect {
+        display: flex;
+        flex-basis: 100%;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.35);
+        font-size: 12px;
+        margin: 8px 0px;
+      }
+      
+.hr-sect::before, .hr-sect::after {
+        content: "";
+        flex-grow: 1;
+        background: rgba(0, 0, 0, 0.35);
+        height: 1px;
+        font-size: 0px;
+        line-height: 0px;
+        margin: 0px 16px;
+}
+      
+#signUpBtn {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 48px;
+	margin-right: 135px;
+}
+
+#naverlogin{
+	width : 80%;
+	height : 50px;
+	margin-left : 45px;
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+}
+
+#naverlogin:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#findIdBtn {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 45px;
+	margin-right: 135px;
+}
+
+#findPwdBtn {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 45px;
+	margin-right: 135px;
+}
+
+#getnewpass {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 45px;
+	margin-right: 135px;
+}

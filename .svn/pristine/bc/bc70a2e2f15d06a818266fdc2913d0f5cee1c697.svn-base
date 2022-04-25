@@ -1,0 +1,40 @@
+package kr.or.ddit.bnb.reservation.dao;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class CrollingTest {
+
+	public static void main(String[] args) {
+		String URL = "https://www.airbnb.co.kr/rooms/54038997?federated_search_id=9f716a97-180e-4117-8fa1-de37d52a1ccc&source_impression_id=p3_1649756672_qOrqJ958I4MIfwMM";
+		Document doc;
+
+		try {
+			doc = Jsoup.connect(URL).get();
+//			Elements ele = doc.select("#site-content > div > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)"
+//					+ " > div > div > div > div > div > div > div > div._168ht2w > div > div._5ltqju > div > div > div > a > div > picture > ._6tbg2q ");
+//			
+//			String imgLink = ele.get(0).attr("src");
+//			
+//			System.out.println(imgLink);
+			
+			Elements ele = doc.select("#site-content > div > div:nth-child(1) > div:nth-child(3) > div > div._16e70jgn > div > div:nth-child(3) > div > div:nth-child(2) > div:nth-child(1) > span > span");
+//			
+			for(Element e : ele) {
+				String encode = URLEncoder.encode(e.text(), "utf-8");
+				System.out.println(encode);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}

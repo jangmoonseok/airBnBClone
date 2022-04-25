@@ -1,0 +1,148 @@
+package kr.or.ddit.bnb.reservation.serveice;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.bnb.reservation.dao.IReservationDao;
+import kr.or.ddit.bnb.reservation.dao.ReservationDaoImpl;
+import kr.or.ddit.bnb.reservation.vo.ReservationVO;
+import kr.or.ddit.bnb.reservation.vo.SchedulVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+public class ReservationServiceImpl implements IReservationService{
+
+	private IReservationDao dao;
+	private SqlMapClient smc;
+	
+	//싱글톤패턴
+	private static ReservationServiceImpl service;
+	private ReservationServiceImpl() {
+		dao = ReservationDaoImpl.getInstance();
+		smc = SqlMapClientFactory.getsqlMapClient();
+	}
+	public static ReservationServiceImpl getInstance() {
+		if(service == null) service = new ReservationServiceImpl();
+		return service;
+	}
+	
+	//검색 시작시 위치 자동완성반환
+	//주소 검색시 관련 검색어 노출되도록 like 연산자 사용
+	//예) '제주' 검색 시, 제주와 관련된 항목 노출
+	//servlet에서 상세주소는 자르고 노출하는 작업이 필요함.
+	@Override
+	public List<ProdVO> locationReturn(String addr) {
+		List<ProdVO> list = null;
+		
+		try {
+			list = dao.locationReturn(smc, addr);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//숙소목록 검색
+	//파라미터 맵 : 위치(String)[, 체크인 날짜(date), 체크아웃 날짜(date), 인원수(int)]
+	//[ ]는 동적쿼리 처리(값이 있을 경우만 사용)
+	@Override
+	public List<ProdVO> searchProd(Map<String, Object> map) {
+		List<ProdVO> list = new ArrayList();
+		List<ProdVO> temp = null;
+		List<String> linkList = null;
+		
+		try {
+			temp = dao.searchProd(smc, map);
+			for(ProdVO vo : temp) {
+				linkList = dao.getImg(smc, vo.getProd_id());
+				vo.setLink(linkList);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//목록에서 필터링
+	//파라미터 맵 : 위치(String addr)[, 체크인 날짜(date check_in), 체크아웃 날짜(date check_out), 
+	//		인원수(int person), 최저요금(int min_price), 최대요금(int max_price), 타입(String type), 파트(String part), 
+	//		정렬기준컬럼(String sort => prod_price 등의 값), 정렬방식(String order => asc/desc)]
+	//[ ]는 동적쿼리 처리(값이 있을 경우만 사용, 생략가능)
+	//주의사항 : 체크인 날짜가 있으면 아웃 날짜도 반드시 있어야 함. 정렬방식(asc/desc)를 선택하려면 정렬기준컬럼도 반드시 있어야 함.
+	@Override
+	public List<ProdVO> filter(Map<String, Object> map) {
+		List<ProdVO> list = new ArrayList();
+		List<ProdVO> temp = null;
+		List<String> linkList = null;
+		
+		try {
+			temp = dao.filter(smc, map);
+			for(ProdVO vo : temp) {
+				linkList = dao.getImg(smc, vo.getProd_id());
+				vo.setLink(linkList);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//이미지 - 사용 x
+	//파라미터는 검색결과에서 받아온 String prod_id
+	@Override
+	public List<String> getImg(String prod_id) {
+		List<String> list = null;
+		
+		try {
+			list = dao.getImg(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//스케쥴 인서트
+	@Override
+	public int insertSchedule(SchedulVO scheVo) {
+		int cnt = 0;
+		try {
+			cnt = dao.insertSchedule(smc, scheVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	@Override
+	public int insertReservation(ReservationVO reserVo) {
+		int cnt = 0;
+		try {
+			cnt = dao.insertReservation(smc, reserVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	@Override
+	public int getSchePrice(Map<String, Object> map) {
+		int res = 0;
+		try {
+			res = dao.getSchePrice(smc, map);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+}

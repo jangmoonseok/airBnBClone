@@ -1,0 +1,20 @@
+package kr.or.ddit.bnb.reservation.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+
+public interface IReservationDao {
+	/**
+	 * 
+	 * @param smc
+	 * @param addr 
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ProdVO> getProdList(SqlMapClient smc, String addr) throws SQLException;
+}

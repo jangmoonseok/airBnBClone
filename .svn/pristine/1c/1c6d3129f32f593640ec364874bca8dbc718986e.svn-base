@@ -1,0 +1,79 @@
+package kr.or.ddit.bnb.prod.service;
+
+import java.sql.SQLException;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.dao.ProdDaoImpl;
+import kr.or.ddit.bnb.prod.vo.ProdConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdImgVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+public class ProdServiceImpl implements IProdService {
+	   
+	private ProdDaoImpl dao;
+	private static ProdServiceImpl service;
+	private SqlMapClient smc;
+	
+  
+	
+	private ProdServiceImpl() {
+		dao=ProdDaoImpl.getInstance();
+		smc=SqlMapClientFactory.getsqlMapClient();
+	}
+	public static ProdServiceImpl getInstance() {
+		if(service==null) service=new ProdServiceImpl();
+		
+		return service;
+	}
+	
+	@Override
+	public int insertProd(ProdVO prodVo,ProdImgVO prodimgVo,ProdConvenVO prodconvenVo) {
+		int cnt=0;
+		
+		
+		try {
+		
+			cnt=dao.insertProd(smc, prodVo);
+		    cnt=dao.insertProdImg(smc,prodimgVo);
+			cnt=dao.insertProdConven(smc,prodconvenVo);
+					
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
+		
+	}
+
+	@Override
+	public int insertProdImg(ProdImgVO prodimgVo) {
+		int cnt=0;
+		
+		try {
+			cnt=dao.insertProdImg(smc, prodimgVo);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	@Override
+	public int insertProdConven(ProdConvenVO prodconvenVo) {
+		int cnt=0;
+		
+		
+		try {
+			cnt=dao.insertProdConven(smc, prodconvenVo);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+
+}

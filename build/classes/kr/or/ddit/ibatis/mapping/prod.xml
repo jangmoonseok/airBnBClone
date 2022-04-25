@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+ <sqlMap namespace="prod">
+ 
+ <!-- 상품 등록 :아이디는 시퀀스써서 저절로 1씩증가해서 나타남 호스트id는 멤버id에 맞는 호스트 id를 가져온다. -->
+     <insert id="insertProd" parameterClass="prodVo">
+     <!-- <selectKey keyProperty="prod_id" resultClass="int">
+                   select ('p'||trim(TO_CHAR(prod_seq.nextval,'000'))) from dual
+             </selectKey>  -->    
+       insert into prod(PROD_ID,PROD_TYPE,PROD_PART,PROD_ADD1,PROD_ADD2,PROD_NAME,PROD_DES,
+                         PROD_PER,PROD_DATE,PROD_PRICE,HOST_ID)
+           values('p'||trim(TO_CHAR(prod_seq.nextval,'000')),#prod_type#,#prod_part#,#prod_add1#,#prod_add2#,#prod_name#,#prod_des#,
+                   #prod_per#,sysdate,#prod_price#,
+                   (select host_id from host a left outer join member b on a.mem_id=b.mem_id where a.mem_id=#host_id#))
+                   
+     
+      
+             
+       </insert>
+      
+          <!-- 이미지 등록 상품아이디는 추가한것에서 마지막꺼 추가-->   
+      <insert id="insertProdImg" parameterClass="prodimgVo">
+           insert into prod_img(PROD_ID,IMG_LINK)
+             values((select prod_id from prod where prod_id=(select max(prod_id)from prod)),#img_link#)
+             
+                      
+             
+             
+             
+             
+         </insert>
+        <!-- 편의시설 등록 상품아이디는 추가한것에서 마지막꺼 추가,편의시설id는 해당편의시설 이름에 맞는 id추가-->
+        <insert id="insertProdConven" parameterClass="prodconvenVo">
+           insert into PRODCONVEN(PROD_ID,CONVEN_ID)
+              values((select prod_id from prod where prod_id=(select max(prod_id)from prod))
+                     ,(select conven_id from conven where conven_name=#conven_name#))
+            
+        
+        </insert>
+       
+        <!-- 등록취소 누르면 remove상태가 n에서 y로 바껴서 등록취소 되었다라고 된다. -->
+      <update id="updateProd" parameterClass="prodVo">   
+             update prod 
+             set prod_remove ='y'
+             where prod_remove='n' 
+   		     and prod_id=#prod_id#
+        
+      </update>
+      
+      <select id="getProdDetail" resultClass="prodVo" parameterClass="string">
+      	select * from prod a, host b where a.host_id = b.host_id and a.prod_id = #data#
+      </select>
+      
+      
+      <!-- 호스트가 등록한 숙소 조회 -->
+      <select id="HostProdList" parameterClass="String" resultClass="prodVo">
+         select * from prod a ,host b 
+      		where a.host_id=b.host_id
+      		and b.mem_id=#mem_id#
+      		and a.prod_remove = 'n'
+    
+      </select>
+ 
+ 
+ 
+ 
+ </sqlMap>

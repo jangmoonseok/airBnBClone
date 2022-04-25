@@ -1,0 +1,94 @@
+//package kr.or.ddit.bnb.admin.service;
+//
+//import java.util.List;
+//
+//import com.ibatis.sqlmap.client.SqlMapClient;
+//
+//import kr.or.ddit.bnb.admin.dao.IQnAansDao;
+//import kr.or.ddit.bnb.admin.dao.QnAansDao;
+//import kr.or.ddit.bnb.admin.vo.QNAVO;
+//import kr.or.ddit.util.SqlMapClientFactory;
+//
+//
+//
+//public class QnAansService implements IQnAansService{
+//	
+//	private IQnAansDao dao;
+//	private SqlMapClient smc;
+//	
+//	private static QnAansService service;
+//	
+//	private static QnAansService() {
+//		dao = QnAansDao.getInstance();
+//		smc = SqlMapClientFactory.getsqlMapClient();
+//	}
+//	
+//	public static QnAansService getInstance() {
+//		if(service==null) service = new QnAansService();
+//		return service;
+//	}
+//
+//	@Override
+//	public int getQnACount() {
+//		
+//		return 0;
+//	}
+//
+//	@Override
+//	public List<QNAVO> getQnaList() {
+//		List<QNAVO> QNAlist = null;
+//		try {
+//			QNAlist = dao.getQnaList(smc);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return QNAlist;
+//	}
+//
+//	@Override
+//	public int insertQnAans(QNAVO qnaVO) {
+//		int answer = 0;
+//		try {
+//			answer = dao.insertQnAans(smc, qnaVO);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return answer;
+//	}
+//
+//	@Override
+//	public int deleteQnAans(String admin_id) {
+//		int answer = 0;
+//		try {
+//			answer = dao.deleteQnAans(admin_id);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return 0;
+//	}
+//
+//	@Override
+//	public int updateQnAans(QNAVO qnaVO) {
+//		int answer = 0;
+//		try {
+//			answer = dao.updateQnAans(qnaVO);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return answer;
+//	}
+//
+//	@Override
+//	public QNAVO getQnA(String qna_title) {
+//		
+//		return null;
+//	}
+//
+//	@Override
+//	public int insertBoard(QNAVO qnaVO) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//	
+//		
+//}

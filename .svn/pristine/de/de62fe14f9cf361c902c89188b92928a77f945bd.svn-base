@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="notice">
+	<insert id="insertNo" parameterClass="noticeVo">
+		insert into notice
+		values('no'||trim(TO_CHAR(noti_seq.nextval,'000')), 'admin', #noti_title#, #noti_con#, sysdate)	
+	</insert>
+
+	<select id="selectNo" resultClass="noticeVo">
+		select * from notice where admin_id = 'admin'
+	</select>
+	
+	<select id="selectDNo" parameterClass="String" resultClass="noticeVo">
+		select * from notice where noti_id = #noti_id# and admin_id = 'admin'
+	</select>
+	
+	<delete id="deleteNo" parameterClass="String">
+		delete from notice where noti_id = #noti_id# and admin_id = 'admin'
+	</delete>
+
+	<update id="updateNo" parameterClass="noticeVo">
+		update notice set noti_title = #noti_title#, noti_con = #noti_con#, noti_date = sysdate
+		 where noti_id = #noti_id# and admin_id = 'admin'
+	</update>
+</sqlMap>

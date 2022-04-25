@@ -1,0 +1,227 @@
+@charset "UTF-8";
+
+a:hover{
+	text-decoration: none;
+}
+
+/* header */
+#headerTop{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 30px 150px;
+}
+
+#logoContainer a{
+	display: flex;
+	align-items: center;
+	color: hotpink
+}
+
+#logoTitle{
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 20px;
+}
+
+header button{
+	border: none;
+	border-radius: 50px;
+	height: 50px;
+	background: transparent;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.userContent{
+	display: flex;
+	align-items: center;
+}
+.hostingBtn{
+	background: transparent;
+	color: white;
+	font-weight: bold;
+	width: 100px;
+}
+.hostingBtn a{
+	color: black;
+	
+}
+
+.hostingBtn:hover{
+	background: #f0f1f2;
+	cursor: pointer;
+}
+
+.userMenu{
+	display : flex;
+	align-items : center;
+	justify-content:center;
+	cursor: pointer;
+	width:80px;
+	margin-left: 20px;
+	border: 1px solid black;
+}
+
+#userMenu_list{
+	display : none;
+	background:white;
+	position: absolute;
+	right: 20px;
+	top:100px;
+	z-index:100;
+	border-radius: 10px;
+	width: 200px;
+	border:5px solid transparent;
+	background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(to right, #fbfcb9be, #ffcdf3aa, #65d3ffaa);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+
+.userMenu_item{
+	margin: 10px 0;
+	padding: 10px 0;
+	font-size : 15px;
+	cursor: pointer;
+	text-align:center;
+}
+
+.userMenu_item:hover{
+	background:#f0f1f2;
+}
+
+.userMenu_item a{
+	color: black;
+	text-decoration: none;
+	outline: none
+}
+
+/* main */
+ main{
+ 	margin: 30px 0;
+ }
+#searchList{
+/* 	margin: 20px; */
+/* 	width: 90%; */
+	height: 60vh;
+	overflow: auto;
+} 
+#searchList2{
+/* 	margin: 20px; */
+/* 	width: 90%; */
+	height: 60vh;
+	overflow: auto;
+} 
+#mainTitle{
+	margin-left : 150px;
+/* 	text-align: center; */
+} 
+
+#guestBoard{
+	margin: 20px 150px;
+	margin-right: 10px;
+	border: 1px solid gray;
+	border-radius: 30px;
+	padding: 20px;
+	width: 35%;
+	float: left;
+}
+
+#hostBoard{
+	margin: 20px 150px;
+	margin-left: 150px;
+	border: 1px solid gray;
+	border-radius: 30px;
+	padding: 20px;
+	width: 35%;
+	float: left;
+}
+
+.title{
+	font-size: 40px;
+	font-family: 'Black Han Sans', sans-serif; 
+	margin-left : 25px;
+	
+}
+
+.title2{
+	font-size: 30px;
+	font-family: 'Black Han Sans', sans-serif; 
+	margin-left : 25px;
+	
+}
+.tdName{
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 500;
+}
+
+#result_prodList tr{
+	font-size: 0.8em;
+}
+
+.se{
+	display: inline-block;
+	width: 55%;
+}
+
+.sese{
+ 	display: inline-block;
+	text-align: right;
+	vertical-align: bottom;
+}
+th{
+	font-family: 'Noto Sans KR', sans-serif;
+}
+.tdf{
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: 300;
+}
+/* footer */
+#footer{
+	background: #e3e2de;
+	clear:both;
+}
+
+#footer_list{
+	display: flex;
+	justify-content: center;
+	padding: 30px;
+}
+
+#footer_list li{
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+#footer_list ul{
+	margin: 10px 20px;
+}
+
+#footer_list h3{
+	font-weight: bold;
+	margin: 0 20px;
+}
+
+#footer_mark{
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+}
+
+/* SignUp Modal */
+.form-group input{
+	width: 300px;
+	display:inline-block;
+}
+
+.form-group input[type=radio]{
+	width: 50px;
+}
+
+.form-group label{
+	display:inline-block;
+	width:130px;
+}
+
+#findPwd{
+	margin-left:130px;
+}

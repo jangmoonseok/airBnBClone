@@ -1,0 +1,42 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.BuyerVO;
+import kr.or.ddit.bnb.admin.vo.HostVO;
+import kr.or.ddit.bnb.admin.vo.PickBuyerVO;
+import kr.or.ddit.bnb.admin.vo.PickHostVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public interface IManagementDao {
+
+	
+		//회원관리 - 구매자 목록 조회
+		public List<BuyerVO> getBuyerList(SqlMapClient smc) throws SQLException;
+		
+		//구매자 선택
+		public List<PickBuyerVO> getbuyer(SqlMapClient smc, String mem_id) throws SQLException;
+		
+		//구매자 목록 -> 정보 삭제
+	
+		//회원관리 - 판매자 목록 조회
+		public List<HostVO> getHostList(SqlMapClient smc) throws SQLException;
+		
+		//판매자 선택
+		public List<PickHostVO> getHost(SqlMapClient smc, String host_id) throws SQLException;
+		
+		//판매자 목록 -> 정보 삭제
+
+		//전체 판매자 목록 조회
+		public List<HostVO> getAllHostList(SqlMapClient smc) throws SQLException;
+		
+		//호스트 별 등록 숙소
+		public List<ProdVO> getHostProd(SqlMapClient smc, String host_id) throws SQLException;
+
+		//관리자 로그인
+		public String adminLogin(SqlMapClient smc, Map<String, String> admin) throws SQLException;
+}

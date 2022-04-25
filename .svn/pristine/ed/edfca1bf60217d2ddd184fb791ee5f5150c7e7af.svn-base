@@ -1,0 +1,340 @@
+package kr.or.ddit.bnb.reservation.controller;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+import kr.or.ddit.bnb.member.vo.FavorListVO;
+import kr.or.ddit.bnb.prod.vo.ConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.bnb.reservation.serveice.IReservationService;
+import kr.or.ddit.bnb.reservation.serveice.ReservationServiceImpl;
+import kr.or.ddit.bnb.reservation.vo.ReservationVO;
+import kr.or.ddit.bnb.reservation.vo.SchedulVO;
+
+public class TestController {
+
+	private Scanner scan = new Scanner(System.in);
+	private IReservationService service;
+	public TestController() {
+		service = ReservationServiceImpl.getInstance();
+	}
+	
+	public static void main(String[] args) {
+		//Dao 테스트용 임시 Controller
+		new TestController().start();
+		
+	}
+	
+	private void start() {
+		while (true) {
+			
+			int choice = displayMenu();
+			scan.nextLine(); // 버퍼 비우기
+			
+			switch (choice) {
+			case 1: 
+				location();
+				break;
+			case 2: 
+				search();
+				break;
+			case 3: 
+				filter();
+				break;
+			case 4: 
+				reservation();
+				break;
+			case 5: 
+				addFavor();
+				break;
+			case 6: 
+				getConven();
+				break;
+			case 0: // 작업 끝
+				System.out.println("작업을 마칩니다.");
+				return;
+			default:
+				System.out.println("번호를 잘못 입력했습니다. 다시입력하세요.");
+			}
+		}
+	}
+	
+	private void getConven() {
+		// TODO Auto-generated method stub
+		String prod_id = "pr_00_a001";
+		
+		 List<ConvenVO> conven = service.getConven(prod_id);
+		
+		System.out.println(conven);
+		
+	}
+
+	private void addFavor() {
+		// TODO Auto-generated method stub
+		System.out.print("회원 아이디");
+		String mem_id = scan.nextLine();
+		
+		System.out.print("숙소 아이디");
+		String prod_id = scan.nextLine();
+		
+		FavorListVO vo = new FavorListVO();
+		
+		vo.setMem_id(mem_id);
+		vo.setProd_id(prod_id);
+		
+		int addFavor = service.addFavor(vo);
+		
+		if(addFavor > 0) {
+			System.out.println("찜 추가 성공");
+		} else {
+			System.out.println("찜 추가 실패");
+		}
+	}
+
+	private void reservation() {
+//		스케쥴 등록 (sche_id, prod_id, mem_id, check_in, check_out, sche_price)
+
+		
+		System.out.print("회원아이디");
+		String mem_id = scan.nextLine();
+		
+		System.out.print("상품코드");
+		String prod_id = scan.nextLine();
+		
+		System.out.print("체크인");
+		String check_in = scan.nextLine();
+		
+		System.out.print("체크아웃");
+		String check_out = scan.nextLine();
+
+		System.out.print("예약 인원");
+		int reser_per = scan.nextInt();
+		scan.nextLine();
+		
+		System.out.println("요청 사항");
+		String reser_req = scan.nextLine();
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("check_in", check_in);
+		param.put("check_out", check_out);
+		param.put("prod_id", prod_id);
+		
+		int sche_price = service.getSchePrice(param);
+		System.out.println("일정에 대한 금액 : " + sche_price);
+		
+		System.out.println("선택한 일정에 대해 예약하시겠습니까? (y/n)");
+		String choice = scan.nextLine();
+		
+		if(choice.equals("n")) {
+			return;
+		}
+		
+		SchedulVO scheVo = new SchedulVO();
+		
+		scheVo.setProd_id(prod_id);
+		scheVo.setMem_id(mem_id);
+		// 포맷터
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date inDate = null;
+		Date outDate = null;
+		try {
+			if(!(check_in.equals(""))) {
+				inDate = formatter.parse(check_in);
+			}
+			
+			if(!(check_out.equals(""))) {
+				outDate = formatter.parse(check_out);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		scheVo.setCheck_in(inDate);
+		scheVo.setCheck_out(outDate);
+		scheVo.setSche_price(sche_price);
+		
+//		예약 등록 (RESER_ID, SCHE_ID, RESER_PER, RESER_REQ, RESER_PRICE)		
+		ReservationVO reservVo = new ReservationVO();
+		reservVo.setReser_per(reser_per);
+		reservVo.setReser_price(sche_price);
+		reservVo.setReser_req(reser_req);
+		
+		int result = service.insertReservation(scheVo, reservVo);
+		
+		if(result > 0) {
+			System.out.println("예약 성공");
+		} else {
+			System.out.println("예약 실패");
+		}
+	}
+
+	private void filter() {
+		System.out.print("위치 검색어");
+		String addr = scan.nextLine();
+		
+		// 포맷터
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date inDate = null;
+		Date outDate = null;
+		try {
+			System.out.print("체크인 날짜");
+			String in = scan.nextLine();
+			if(!(in.equals(""))) {
+				inDate = formatter.parse(in);
+			}
+			
+			System.out.print("체크아웃 날짜");
+			String out = scan.nextLine();
+			if(!(out.equals(""))) {
+				outDate = formatter.parse(out);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int min_price = 0;
+		int max_price = 1500000;
+		
+		System.out.print("인원수");
+		String person = scan.nextLine();
+		
+		System.out.print("최소요금");
+		min_price = scan.nextInt();
+		
+		System.out.print("최대요금");
+		max_price = scan.nextInt();
+		
+		scan.nextLine(); //버퍼 비우기
+		
+		System.out.print("타입(아파트 등)");
+		String type = scan.nextLine();
+		
+		System.out.print("파트(공간전체 등)");
+		String part = scan.nextLine();
+		
+		System.out.println("정렬 기준 컬럼(prod_price, prod_...");
+		String sort = scan.nextLine();
+		
+		System.out.println("오름차순/내림차순(asc, desc");
+		String order = scan.nextLine();
+		
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("addr", addr);
+		if(inDate != null) param.put("check_in", inDate);
+		if(outDate != null) param.put("check_out", outDate);
+		if(!(person.equals(""))) param.put("person", person);
+		
+		param.put("min_price", min_price);
+		param.put("max_price", max_price);
+		
+		if(!(type.equals(""))) param.put("type", type);
+		if(!(part.equals(""))) param.put("part", part);
+		
+		if(!(sort.equals(""))) param.put("sort", sort);
+		if(!(order.equals(""))) param.put("order", order);
+		
+		List<ProdVO> list = service.filter(param);
+		
+		if(list == null || list.size() == 0) {
+			System.out.println("출력할 자료가 하나도 없습니다.");
+		} else {
+			for(ProdVO vo : list) {
+				System.out.println(vo.toString());
+				
+				System.out.println("--------------------------------------------------------");
+			}
+		}
+	}
+
+	private void search() {
+		System.out.print("위치 검색어");
+		String addr = scan.nextLine();
+		
+		// 포맷터
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date inDate = null;
+		Date outDate = null;
+		try {
+			System.out.print("체크인 날짜");
+			String in = scan.nextLine();
+			if(!(in.equals(""))) {
+				inDate = formatter.parse(in);
+			}
+			
+			System.out.print("체크아웃 날짜");
+			String out = scan.nextLine();
+			if(!(out.equals(""))) {
+				outDate = formatter.parse(out);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		System.out.print("인원수(선택)");
+		String person = scan.nextLine();
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("addr", addr);
+		if(inDate != null) param.put("check_in", inDate);
+		if(outDate != null) param.put("check_out", outDate);
+		if(!(person.equals(""))) param.put("person", person);
+		
+		List<ProdVO> list = service.searchProd(param);
+		
+		if(list == null || list.size() == 0) {
+			System.out.println("출력할 자료가 하나도 없습니다.");
+		} else {
+			for(ProdVO vo : list) {
+				System.out.println(vo.toString());
+				
+				System.out.println("--------------------------------------------------------");
+			}
+		}
+		
+	}
+
+	private void location() {
+		System.out.print("위치 검색어");
+		String addr = scan.nextLine();
+		List<ProdVO> list = service.locationReturn(addr);
+		
+		if(list == null || list.size() == 0) {
+			System.out.println("출력할 자료가 하나도 없습니다.");
+		} else {
+			for(ProdVO vo : list) {
+				System.out.println(vo.toString());
+				
+				System.out.println("--------------------------------------------------------");
+			}
+		}
+		
+	}
+
+	private int displayMenu() {
+		System.out.println();
+		System.out.println(" == 작 업 선 택 ==");
+		System.out.println(" 1. 위치 자동완성");
+		System.out.println(" 2. 숙소검색");
+		System.out.println(" 3. 필터링");
+		System.out.println(" 4. 예약");
+		System.out.println(" 5. 찜 추가");
+		System.out.println(" 6. 편의시설 확인");
+		System.out.println(" 0. 작 업 끝");
+		System.out.println("-------------------");
+		System.out.println("원하는 작업번호 >> ");
+		return scan.nextInt();
+	}
+
+}

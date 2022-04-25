@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+ main{
+ 	margin: 30px 0;
+ }
+ 
+#mainTitle{
+	margin-left : 150px;
+/* 	text-align: center; */
+} 
+
+#headerTop{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 30px 150px;
+}
+
+#logoContainer a{
+	display: flex;
+	align-items: center;
+	color: hotpink
+}
+
+.sese div{
+ width:100%;
+ height:auto;
+ border:1px solid red;
+ /* background:yellow; */
+ background-image:linear-gradient(yellow,pink,white);
+ margin:6px;
+}
+
+.rpl dei{
+	font-size:2.0em;
+	
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="reservation">
+
+	<sql id="dynamicCondition">
+		<dynamic prepend = " where ">
+			<isNotEmpty property="stype" prepend= " and ">
+				<isNotEmpty property = "sword">
+					$stype$ like '%'||#sword#||'%'
+				</isNotEmpty>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<select id="searchLocation" resultClass="prodVo" parameterClass="String">
+		select * from prod where prod_add1 like '%'||#data#||'%'
+	</select>
+	
+	<select id="searchProd" resultClass="prodVo" parameterClass="String">
+		select * from prod where prod_add1 like '%'||#data#||'%'
+	</select>
+	
+</sqlMap>

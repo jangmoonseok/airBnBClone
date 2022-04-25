@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+
+	<!-- 회원가입 -->
+	<insert id="insertMember" parameterClass="memVo">
+		INSERT INTO MEMBER(MEM_ID, MEM_NAME, MEM_PASS, MEM_EMAIL, MEM_TEL, MEM_ADDR,
+		                   MEM_BIRTH, MEM_HINT, MEM_ANS, MEM_JOIN) 
+		VALUES (#mem_id#, #mem_name#, #mem_pass#, #mem_email#, #mem_tel#,
+		        #mem_addr#, #mem_birth#, #mem_hint#, #mem_ans#, sysdate)
+		        
+	   <selectKey keyProperty="mem_id" resultClass="String">
+          select mem_id from member where mem_id=#mem_id#
+       </selectKey>
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="getMember" parameterClass="memVo" resultClass="memVo">
+		select * from member where mem_id = #mem_id# and mem_pass = #mem_pass#
+	</select>
+	
+	<!-- 아이디 중복검사 -->
+    <select id="idCheck" resultClass="int" parameterClass="String">
+       select count(*) from member where mem_id=#mem_id#
+    </select>
+	
+	<!-- 아이디찾기 -->
+	<select id="findId" parameterClass="memVo" resultClass="String">
+		select mem_id from member where mem_name = #mem_name# and mem_tel = #mem_tel#
+	</select>
+	
+	<!-- 비밀번호찾기 -->
+	<select id="findPass" parameterClass="memVo" resultClass="memVo">
+		select * from member where mem_id = #mem_id# and mem_name = #mem_name#
+		and mem_hint = #mem_hint# and mem_ans = #mem_ans#
+	</select>
+	
+	<!-- 비밀번호 재설정 -->
+	<update id="updatePass" parameterClass="String">
+		update member set mem_pass = #mem_pass#
+	</update>
+	
+	<!-- 마이페이지/회원정보 조회 -->
+	<select id="getMemberList" resultClass="memVo" parameterClass="String">
+		SELECT * FROM MEMBER where mem_id = #mem_id#
+	</select>
+	
+	<!-- 마이페이지/회원정보 수정 -->
+	<update id="updateMember" parameterClass="memVo">
+		UPDATE MEMBER 
+		   SET MEM_PASS=#mem_pass#, MEM_EMAIL=#mem_email#, MEM_TEL=#mem_tel#,
+			   MEM_ADDR=#mem_addr#, MEM_HINT=#mem_hint#, MEM_ANS=#mem_ans#
+		WHERE MEM_ID=#mem_id# 
+	</update>
+	
+	<!-- 마이페이지/회원탈퇴 -->
+	<delete id="deleteMember" parameterClass="String">
+		DELETE FROM MEMBER WHERE MEM_ID=#mem_id#
+	</delete>
+
+	<!-- 마이페이지/예약내역목록 -->
+	<select id="reserList" parameterClass="string" resultClass="reserLVo">
+		select a.prod_name, a.prod_add1, c.check_in, c.check_out, d.reser_id
+          from prod a, prod_img b, schedule c, reservation d
+         where a.prod_id = b.prod_id
+           and a.prod_id = c.prod_id
+           and c.sche_id = d.sche_id
+	</select>
+	
+	<!-- 마이페이지/예약내역상세 -->
+	<select id="reserDetail" parameterClass="map" resultClass="reserDVo">
+		select b.img_link, a.prod_name, e.host_id, a.prod_add1, a.prod_add2, c.check_in,
+               c.check_out, d.reser_price, d.reser_per, d.reser_stat, d.reser_date, d.reser_req
+          from prod a, prod_img b, schedule c, reservation d, host e
+         where rownum = 1
+           and c.mem_id = #mem_id#
+           and d.reser_id = #reser_id#
+           and a.prod_id = b.prod_id
+           and a.prod_id = c.prod_id
+           and c.sche_id = d.sche_id
+           and a.host_id = e.host_id
+	</select>
+</sqlMap>

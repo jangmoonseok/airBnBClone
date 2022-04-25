@@ -1,0 +1,102 @@
+package kr.or.ddit.bnb.admin.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.dao.IQnAansDao;
+import kr.or.ddit.bnb.admin.dao.QnAansDao;
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+import kr.or.ddit.bnb.admin.vo.QNA_ANSVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+
+
+public class QnAansService implements IQnAansService{
+	
+	private IQnAansDao dao;
+	private SqlMapClient smc;
+	
+	private static QnAansService service2;
+	
+	public QnAansService() {
+		dao = QnAansDao.getInstance();
+		smc = SqlMapClientFactory.getsqlMapClient();
+	}
+	
+	public static QnAansService getInstance() {
+		if(service2==null) service2 = new QnAansService();
+		return service2;
+	}
+
+	@Override
+	public int insertBoard(QNA_ANSVO qnaVO) {
+		int Board = 0;
+		try {
+			Board = dao.insertBoard(smc,qnaVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Board;
+	}
+
+	@Override
+	public List<QNAVO> QuestionList() {
+		List<QNAVO> QuestionList = null;
+		try {
+			QuestionList = dao.QuestionList(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return QuestionList;
+		
+	
+	}
+
+	
+	@Override
+	public List<QNAVO> MemQuestionList() {
+		List<QNAVO> QuestionList = null;
+		try {
+			QuestionList = dao.MemQuestionList(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return QuestionList;
+	}
+	
+	@Override
+	public int insertAnswer(QNA_ANSVO answerVO) {
+		int Answer = 0;
+		try {
+			Answer = dao.insertAnswer(smc,answerVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Answer;
+	}
+
+	@Override
+	public int deleteQuestion(String qna_id) {
+		int deleteQuestion = 0;
+		try {
+			deleteQuestion = dao.deleteQuestion(smc, qna_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return deleteQuestion;
+	}
+
+	@Override
+	public int insertQuestion(QNAVO boardVo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
+
+
+
+}

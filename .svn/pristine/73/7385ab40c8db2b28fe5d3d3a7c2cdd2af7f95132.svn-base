@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+ <sqlMap namespace="prod">
+     <insert id="insertProd" parameterClass="prodVo">
+     <!-- <selectKey keyProperty="prod_id" resultClass="int">
+                   select ('p'||trim(TO_CHAR(prod_seq.nextval,'000'))) from dual
+             </selectKey>  -->    
+       insert into prod(PROD_ID,PROD_TYPE,PROD_PART,CITY_ID,PROD_ADD1,PROD_ADD2,PROD_NAME,PROD_DES,
+                         PROD_PER,PROD_DATE,PROD_PRICE,HOST_ID)
+           values('p'||trim(TO_CHAR(prod_seq.nextval,'000')),#prod_type#,#prod_part#,#city_id#,#prod_add1#,#prod_add2#,#prod_name#,#prod_des#,
+                   #prod_per#,TO_CHAR(#prod_date#),#prod_price#,#host_id#)
+                   
+     
+  
+             
+       </insert>
+      
+             
+      <insert id="insertProdImg" parameterClass="prodimgVo">
+          insert into prod_img(PROD_ID,IMG_LINK)
+             values('p'||trim(TO_CHAR(prod_seq.nextval,'000')),#img_link#)
+             
+             
+         </insert>
+        
+        <insert id="insertProdConven" parameterClass="prodconvenVo">
+           insert into conven values(prod_id,conven_id)
+              values(#prod_id#,#conven_id#) 
+            
+        
+        </insert>
+ 
+ 
+ 
+ 
+ 
+ </sqlMap>

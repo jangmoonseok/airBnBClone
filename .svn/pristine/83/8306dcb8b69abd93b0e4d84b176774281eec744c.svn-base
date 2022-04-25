@@ -1,0 +1,148 @@
+package kr.or.ddit.bnb.member.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.member.vo.FavorListVO;
+import kr.or.ddit.bnb.member.vo.MemberVO;
+import kr.or.ddit.bnb.member.vo.ReserDetailVO;
+import kr.or.ddit.bnb.member.vo.ReserListVO;
+
+public class MemberDaoImpl implements IMemberDao {
+	private static MemberDaoImpl memDao;
+	
+	private MemberDaoImpl() {
+		
+	}
+	
+	public static MemberDaoImpl getInstance(){
+		if(memDao==null) memDao = new MemberDaoImpl();
+		
+		return memDao;
+	}
+	
+	@Override
+	public int insertMember(SqlMapClient smc, MemberVO memVo) throws SQLException {
+		int cnt = 0;
+		Object obj = smc.insert("member.insertMember", memVo);
+		if(obj!=null) cnt = 1;
+			
+		return cnt;
+	}
+
+	@Override
+	public MemberVO getMember(SqlMapClient smc, MemberVO memVo) throws SQLException {
+		MemberVO memVO = (MemberVO)smc.queryForObject("member.getMember", memVo);
+		
+		return memVO;
+	}
+
+	@Override
+	public String findId(SqlMapClient smc, MemberVO memVo) throws SQLException {
+		String memId = (String) smc.queryForObject("member.findId", memVo);
+		
+		return memId;
+	}
+
+	@Override
+	public MemberVO findPass(SqlMapClient smc, MemberVO memVo) throws SQLException {
+		MemberVO memVO = (MemberVO) smc.queryForObject("member.findPass", memVo);
+		
+		return memVO;
+	}
+
+	@Override
+	public int idCheck(SqlMapClient smc, String memId) throws SQLException {
+		int cnt = 0;
+		
+		cnt = (int) smc.queryForObject("member.idCheck", memId);
+		
+		return cnt;
+	}
+
+	@Override
+	public int updatePass(SqlMapClient smc, String memPass) throws SQLException {
+		int cnt = 0;
+		
+		cnt = smc.update("member.updatePass", memPass);
+		
+		return cnt;
+	}
+
+	@Override
+	public MemberVO getMemberList(SqlMapClient smc, String memId) throws SQLException {
+		MemberVO memVO = (MemberVO) smc.queryForObject("mypage.getMemberList", memId);
+		
+		return memVO;
+	}
+
+	@Override
+	public int deleteMember(SqlMapClient smc, String memId) throws SQLException {
+		int cnt = 0;
+		
+		cnt = smc.delete("mypage.deleteMember", memId);
+		
+		return cnt;
+	}
+
+	@Override
+	public int updateMember(SqlMapClient smc, MemberVO memVo) throws SQLException {
+		int cnt = 0;
+		
+		cnt = smc.delete("mypage.updateMember", memVo);
+		
+		return cnt;
+	}
+
+	@Override
+	public ReserDetailVO reserDetail(SqlMapClient smc, Map<String, Object> resMap) throws SQLException {
+		ReserDetailVO reserDeVo = (ReserDetailVO) smc.queryForObject("mypage.reserDetail", resMap);
+		
+		return reserDeVo;
+	}
+
+	@Override
+	public List<ReserListVO> reserList(SqlMapClient smc, String memId) throws SQLException {
+		List<ReserListVO> reserLiVo = (List<ReserListVO>) smc.queryForList("mypage.reserList", memId);
+		
+		return reserLiVo;
+	}
+
+	@Override
+	public List<String> getImg(SqlMapClient smc, Map<String,String> map) throws SQLException {
+		return smc.queryForList("mypage.getImg", map);
+	}
+
+	@Override
+	public int deleteReser(SqlMapClient smc, Map<String, Object> resDMap) throws SQLException {
+		int cnt = 0;
+		
+		cnt = smc.delete("mypage.deleteReser", resDMap);
+		
+		return cnt;
+	}
+
+	@Override
+	public List<FavorListVO> favorList(SqlMapClient smc, String memId) throws SQLException {
+		List<FavorListVO> favList = (List<FavorListVO>) smc.queryForList("mypage.favorList", memId);
+		
+		return favList;
+	}
+
+	@Override
+	public int deleteFavor(SqlMapClient smc, Map<String, Object> resfMap) throws SQLException {
+		int cnt = 0;
+		
+		cnt = smc.delete("mypage.deleteFavor", resfMap);
+		
+		return cnt;
+	}
+
+	@Override
+	public List<String> getfavImg(SqlMapClient smc, Map<String, String> fmap) throws SQLException {
+		return smc.queryForList("mypage.getfavImg", fmap);
+	}
+}

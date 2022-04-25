@@ -1,0 +1,124 @@
+package kr.or.ddit.bnb.member.service;
+
+import java.sql.SQLException;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.member.dao.MemberDaoImpl;
+import kr.or.ddit.bnb.member.vo.MemberVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+public class MemberServiceImpl implements IMemberService {
+	private MemberDaoImpl dao;  
+	private static MemberServiceImpl memService;
+	private SqlMapClient smc;
+
+	public MemberServiceImpl() {
+		dao = MemberDaoImpl.getInstance();
+		smc = SqlMapClientFactory.getsqlMapClient();
+	} 
+	
+	public static IMemberService getInstance() {
+		if(memService==null) memService = new MemberServiceImpl();
+		return memService;
+	}
+	
+	@Override
+	public int insertMember(MemberVO memVo) {
+		int cnt = 0;
+		try {
+			cnt = dao.insertMember(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public MemberVO getMember(MemberVO memVo) {
+		MemberVO memVO = null;
+		
+		try {
+			memVO = dao.getMember(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memVO;
+	}
+
+	@Override
+	public String findId(MemberVO memVo) {
+		String memId = null;
+		
+		try {
+			memId = dao.findId(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memId;
+	}
+
+	@Override
+	public MemberVO findPass(MemberVO memVo) {
+		MemberVO memVO = null;
+		
+		try {
+			memVO = dao.findPass(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memVO;
+	}
+
+	@Override
+	public int idCheck(String memId) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.idCheck(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;	
+	}
+
+	@Override
+	public int updatePass(String memPass) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.updatePass(smc, memPass);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public MemberVO getMemberList(String memId) {
+		MemberVO memVO = null;
+		
+		try {
+			memVO = dao.getMemberList(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memVO;
+	}
+
+	@Override
+	public int deleteMember(String memId) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.deleteMember(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+}

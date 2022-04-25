@@ -1,0 +1,69 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+import kr.or.ddit.bnb.admin.vo.QNA_ANSVO;
+
+public class QnAansDao implements IQnAansDao{
+	
+	private static QnAansDao dao;
+	private QnAansDao() { }
+	
+	
+	
+	public static QnAansDao getInstance() {
+		if(dao==null) dao = new QnAansDao();
+		return dao;
+	}
+
+
+	@Override
+	public int insertAnswer(SqlMapClient smc, QNA_ANSVO answerVO) throws SQLException {
+		int Ans = 0;
+		Object obj = smc.insert("QNA.Answer", answerVO); 
+		if(obj==null) Ans =1;
+		return Ans;
+	}
+
+	@Override
+	public int deleteQuestion(SqlMapClient smc, String qna_id) throws SQLException {		
+		return smc.delete("QNA.DeleteQna", qna_id);
+	}
+
+
+	@Override
+	public int insertQuestion(SqlMapClient smc, QNAVO qnaVo) throws SQLException {
+		int Question = 0;
+		Object obj = smc.insert("QNA.Question",qnaVo);
+		if(obj==null) Question =1;
+		return Question;
+	}
+
+
+	@Override
+	public List<QNAVO> MemQuestionList(SqlMapClient smc) throws SQLException {
+		List<QNAVO> QuestionList = smc.queryForList("QNA.QuestionList");
+		return QuestionList;
+	}
+
+	@Override
+	public List<QNAVO> QuestionList(SqlMapClient smc) throws SQLException {
+		List<QNAVO> QuestionList = smc.queryForList("QNA.QuestionList");
+		return QuestionList;
+	}
+
+	@Override
+	public List<QNA_ANSVO> SeeQuestion(SqlMapClient smc, String qna_id) throws SQLException {
+		List<QNA_ANSVO> question_info = smc.queryForList("QNA.SeeQuestion",qna_id);
+		return question_info;
+	}
+
+	
+
+	
+
+}

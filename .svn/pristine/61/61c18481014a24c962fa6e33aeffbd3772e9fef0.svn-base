@@ -1,0 +1,51 @@
+package kr.or.ddit.bnb.reservation.vo;
+
+import java.util.Date;
+
+public class SchedulVO {
+	private String sche_id    ;
+	private String prod_id    ;
+	private String mem_id     ;
+	private Date check_in   ;
+	private Date check_out  ;
+	private int sche_price ;
+	
+	String getSche_id() {
+		return sche_id;
+	}
+	void setSche_id(String sche_id) {
+		this.sche_id = sche_id;
+	}
+	String getProd_id() {
+		return prod_id;
+	}
+	void setProd_id(String prod_id) {
+		this.prod_id = prod_id;
+	}
+	String getMem_id() {
+		return mem_id;
+	}
+	void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
+	Date getCheck_in() {
+		return check_in;
+	}
+	void setCheck_in(Date check_in) {
+		this.check_in = check_in;
+	}
+	Date getCheck_out() {
+		return check_out;
+	}
+	void setCheck_out(Date check_out) {
+		this.check_out = check_out;
+	}
+	int getSche_price() {
+		return sche_price;
+	}
+	void setSche_price(int sche_price) {
+		this.sche_price = sche_price;
+	}
+	
+	
+}

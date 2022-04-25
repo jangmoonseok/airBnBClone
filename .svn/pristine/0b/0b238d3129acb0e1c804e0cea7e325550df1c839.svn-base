@@ -1,0 +1,35 @@
+package kr.or.ddit.bnb.admin.service;
+
+import java.util.List;
+
+import kr.or.ddit.bnb.admin.vo.PickRoomVO;
+import kr.or.ddit.bnb.admin.vo.RoomVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public interface IviewRoomService {
+	
+	//숙소관리-숙소조회-숙소삭제
+	
+	//숙소삭제
+	public int deleteRoom(String prod_id);
+	
+	//숙소조회
+	public List<RoomVO> getRoomList();
+	
+	//숙소 상세보기
+	public List<PickRoomVO> room(String prod_id);
+	
+	//등록요청된 숙소 조회
+	public List<ProdVO> waitingRoomList();
+	
+	//등록 승인
+	public int permissionRoom(String prod_id);
+	
+	//등록 거절
+	public int denyRoom(String prod_id);
+
+	
+
+	
+
+}

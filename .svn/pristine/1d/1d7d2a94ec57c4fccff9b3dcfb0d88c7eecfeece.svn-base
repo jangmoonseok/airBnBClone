@@ -1,0 +1,26 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+
+public interface IQnAansDao {
+	
+	public int getQnACount() throws SQLException;
+	
+	public List<QNAVO> getQnaList(SqlMapClient smc) throws SQLException;
+	
+	public int insertQnAans(SqlMapClient smc, QNAVO qnaVO) throws SQLException;
+	
+	public int deleteQnAans(SqlMapClient smc, String admin_id) throws SQLException;
+	
+	public int updateQnAans(SqlMapClient smc, QNAVO qnaVO) throws SQLException;
+	
+	public QNAVO getQnA(SqlMapClient smc, String qna_title) throws SQLException;
+	
+	public int insertBoard(SqlMapClient smc, QNAVO qnaVO) throws SQLException;
+
+}

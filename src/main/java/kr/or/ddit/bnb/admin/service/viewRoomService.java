@@ -1,0 +1,130 @@
+package kr.or.ddit.bnb.admin.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.dao.IviewRoomDao;
+import kr.or.ddit.bnb.admin.dao.viewRoomDao;
+import kr.or.ddit.bnb.admin.vo.PickRoomVO;
+import kr.or.ddit.bnb.admin.vo.RoomVO;
+import kr.or.ddit.bnb.prod.vo.ConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+public class viewRoomService implements IviewRoomService{
+	
+	private IviewRoomDao dao;
+	private SqlMapClient smc;
+	
+	private static viewRoomService service;
+	
+	private viewRoomService() {
+		dao = viewRoomDao.getInstance();
+		smc = SqlMapClientFactory.getsqlMapClient();
+	}
+	
+	public static viewRoomService getInstance() {
+		if(service == null) service = new viewRoomService();
+		return service;
+	}
+
+	@Override
+	public int deleteRoom(String prod_id) {
+		int room = 0;
+		try {
+			room = dao.deleteRoom(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return room;
+	}
+
+	@Override
+	public List<RoomVO> getRoomList() {
+		List<RoomVO> roomList = null;
+		try {
+			roomList = dao.getRoomList(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return roomList;
+	}
+
+	@Override
+	public List<ProdVO> waitingRoomList() {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		List<ProdVO> temp = null;
+		List<String> linkList = null;
+		List<ConvenVO> conven = null;
+		
+		try {
+			temp = dao.waitingRoomList(smc);
+			for(ProdVO vo : temp) {
+				linkList = dao.getImg(smc, vo.getProd_id());
+				conven = dao.getConven(smc, vo.getProd_id());
+				vo.setLink(linkList);
+				vo.setConvenVo(conven);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+
+	@Override
+	public int permissionRoom(String prod_id) {
+		int ok = 0;
+		try {
+			ok = dao.permissionRoom(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ok;
+	}
+	
+	
+	@Override
+	public int denyRoom(String prod_id) {
+		int no = 0;
+		try {
+			no = dao.deleteRoom(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return no;
+	}
+
+	@Override
+	public List<PickRoomVO> room(String prod_id) {
+		List<PickRoomVO> room = null;
+		try {
+			room = dao.room(smc,prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return room;
+	}
+
+	@Override
+	public List<ProdVO> search(String prod_name) {
+		List<ProdVO> list = null;
+		
+		try {
+			list = dao.search(smc, prod_name);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
+
+	
+
+}

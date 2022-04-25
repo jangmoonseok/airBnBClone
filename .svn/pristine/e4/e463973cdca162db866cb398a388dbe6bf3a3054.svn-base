@@ -1,0 +1,25 @@
+package kr.or.ddit.bnb.prod.dao;
+
+import java.sql.SQLException;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.vo.ProdConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdImgVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public interface IProdDao {
+	
+	//상품숙소 등록
+	public int insertProd(SqlMapClient smc,ProdVO prodVo) throws SQLException;
+	
+	//이미지 등록 
+	public int insertProdImg(SqlMapClient smc,ProdImgVO prodimgVo)throws SQLException;
+	
+	
+    //편의시설 등록 
+    public int insertProdConven(SqlMapClient smc,ProdConvenVO prodconvenVo)throws SQLException;
+    
+    
+    
+}

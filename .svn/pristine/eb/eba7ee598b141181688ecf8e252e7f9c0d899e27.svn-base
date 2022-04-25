@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="manage">
+	
+	<!-- 구매자목록 -->
+	<select id ="getBuyerList" resultClass="BuyerVO">
+	select * from member a, schedule b
+	where a.mem_id = b.mem_id	
+		
+	</select>	
+	
+	<!-- 구매자목록에서 선택 -->
+	<select id = "getbuyer" parameterClass="String" resultClass="int">
+	select count(*) geybuyer from member where mem_id=#mem_id#	
+	</select>
+	
+	<!-- 구매자목록 정보 삭제 -->
+	<delete id = "deleteBuyer" parameterClass="String">
+	delete from member where mem_id=#mem_id#	
+	</delete>
+
+	
+	<!--판매자 목록 -->
+	<select id ="getHostList" resultClass="HostVO">
+	select * from prod a, host b
+	where a.host_id = b.host_id	
+	</select>
+	
+	<!--판매자목록에서 선택 -->
+	<select id="gethost" parameterClass="String" resultClass="int">
+	select count(*) gethost from host where host_id=#host_id#
+	</select>
+	
+	<!--판매자 정보 삭제 -->
+	<delete id = "deleteHost" parameterClass="String">
+	delete from host where host_id=#host_id#
+	</delete>
+
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+

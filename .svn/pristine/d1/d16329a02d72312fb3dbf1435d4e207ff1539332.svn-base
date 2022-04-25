@@ -1,0 +1,23 @@
+package kr.or.ddit.bnb.admin.service;
+
+import java.util.List;
+
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+
+
+public interface IQnAansService {
+	
+	public int getQnACount();
+	
+	public List<QNAVO> getQnaList();
+	
+	public int insertQnAans(QNAVO qnaVO);
+	
+	public int deleteQnAans(String admin_id);
+	
+	public int updateQnAans(QNAVO qnaVO);
+	
+	public QNAVO getQnA(String qna_title);
+	
+
+}

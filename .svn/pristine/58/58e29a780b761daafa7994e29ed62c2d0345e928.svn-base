@@ -1,0 +1,42 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+import kr.or.ddit.bnb.admin.vo.QNA_ANSVO;
+
+
+public interface IQnAansDao {
+	
+	
+	//공지사항 쓰기
+	public int insertBoard(SqlMapClient smc, QNA_ANSVO qnaVo) throws SQLException;
+	
+
+	
+	//질문 답변
+	public int insertAnswer(SqlMapClient smc, QNA_ANSVO answerVO) throws SQLException;
+	
+	//질문 삭제//
+	public int deleteQuestion(SqlMapClient smc, String qna_id) throws SQLException;
+
+	//회원용 게시판 작성
+	public int insertQuestion(SqlMapClient smc, String mem_id) throws SQLException;
+	
+	//회원용 게시판 조회
+	List<QNAVO> MemQuestionList(SqlMapClient smc) throws SQLException;
+	
+	//등록된 질문조회//
+	List<QNAVO> QuestionList(SqlMapClient smc) throws SQLException;
+
+	
+
+	
+
+	
+	
+
+}

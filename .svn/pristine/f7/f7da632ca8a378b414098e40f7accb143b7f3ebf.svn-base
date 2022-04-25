@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="QNA">
+	
+	<!-- 회원용 게시판 작성 -->
+<!-- 	<insert id = "memberQuestion" resultClass="qnaVo"> -->
+<!-- 		insert into qna(QNA_ID,MEM_ID,QNA_TITLE,QNA_CON,QNA_DATE) -->
+<!--     	values(#qna_id#,#mem_id#,#qna_title#,#qna_con#,#qna_date#); -->
+<!-- 	</insert> -->
+	
+	<!-- QnA목록 회원용, 관리자용-->
+	<select id = "QuestionList" resultClass="qnaVo">
+		select * from qna
+	
+	</select>
+		
+	
+	
+	<!-- 공지사항 -->
+	<insert id = "Board" parameterClass="answerVo" >
+	</insert>
+
+
+
+	<!-- 답변 -->
+	<insert id = "Answer" parameterClass="answerVo">
+	 insert into qnaans 
+	 values('ans002', 'admin', 
+	 (
+	 	select qna_id 
+	 	from qna 
+	 	where qna_id = #qna_id#), ans_con=#ans_con#, ans_date=sysdate
+	 )
+	</insert>
+	
+
+	<!-- 질문삭제 -->
+	
+	<delete id ="DeleteQna" parameterClass="String">
+		delete from qna
+		where qna_id = #qna_id#
+	
+	</delete>
+
+
+</sqlMap>
+
+
+
+

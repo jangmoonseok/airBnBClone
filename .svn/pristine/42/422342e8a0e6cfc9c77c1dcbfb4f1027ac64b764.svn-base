@@ -1,0 +1,58 @@
+package kr.or.ddit.bnb.admin.vo;
+
+public class HostVO {
+	private String host_id;
+	private String mem_id;
+	private String host_date;
+	private String host_des;
+	private String prod_name;
+	private String prod_id;
+	public String getHost_id() {
+		return host_id;
+	}
+	public void setHost_id(String host_id) {
+		this.host_id = host_id;
+	}
+	public String getMem_id() {
+		return mem_id;
+	}
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
+	public String getHost_date() {
+		return host_date;
+	}
+	public void setHost_date(String host_date) {
+		this.host_date = host_date;
+	}
+	public String getHost_des() {
+		return host_des;
+	}
+	public void setHost_des(String host_des) {
+		this.host_des = host_des;
+	}
+	public String getProd_name() {
+		return prod_name;
+	}
+	public void setProd_name(String prod_name) {
+		this.prod_name = prod_name;
+	}
+	public String getProd_id() {
+		return prod_id;
+	}
+	public void setProd_id(String prod_id) {
+		this.prod_id = prod_id;
+	}
+	
+	@Override
+	public String toString() {
+		return "HostVO [host_id=" + host_id + ", mem_id=" + mem_id + ", host_date=" + host_date + ", host_des="
+				+ host_des + ", prod_name=" + prod_name + ", prod_id=" + prod_id + "]";
+	}
+	
+	
+	
+
+	
+    
+}

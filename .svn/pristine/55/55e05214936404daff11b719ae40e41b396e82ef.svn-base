@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="prod">
+
+	<typeAlias alias = "RoomVO" type = "kr.or.ddit.bnb.admin.vo.RoomVO"/>
+	
+	<delete id="deleteRoom" parameterClass="String">
+		delete from prod where prod_id=#prod_id#
+	</delete>
+	
+	<select id = "getroomList" resultClass="roomVO">
+		select * from prod	
+	</select>
+	
+	
+	<!-- 등록요청된 숙소조회 -->
+	<select id ="waitingRoomList" resultClass="roomVO">
+		select * from 
+		
+		
+		
+		
+	</select>
+	
+	
+	
+	
+	<insert id="permissionRoom">
+		insert into prod(prod_id,prod_type,prod_part,city_id,prod_add1,prod_add2,
+						 prod_name,prod_des,prod_per,prod_date,prod_price,host_id)
+						 
+						 values(#prod_id#,#prod_type#,#prod_part#,#city_id#,#prod_add1#,
+						 #prod_add2#, #prod_name#,#prod_des#,#prod_per#,
+						 #prod_date#,#prod_price#,#host_id#)
+
+	</insert>
+	
+	<delete id ="denyRoom" parameterClass="String">
+		delete * from prod A, host B
+		where A.host_id = B.host_id
+	</delete>
+	
+
+</sqlMap>

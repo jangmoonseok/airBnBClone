@@ -1,0 +1,41 @@
+$(function(){
+	$('#loginBtn').click(function(){
+		id = $('#loginId').val().trim();
+		password = $('#loginPwd').val().trim();
+		
+		if(id == "" || password == ""){
+			alert("로그인 정보를 입력해주세요.")
+		}else{			
+			$.ajax({
+				url : '/dditBnb/login.do',
+				type : 'post',
+				data : {
+					"id" : id,
+					"password" : password
+				},
+				success : function(res){
+					alert(res);
+					location.reload();
+				},
+				error : function(xhr){
+					alert("상태 : " + xhr.status)
+				},
+				dataType : 'text'
+			})
+		}
+	})
+	
+	$('#logOut').click(function(){
+		$.ajax({
+				url : '/dditBnb/logOut.do',
+				type : 'post',
+				success : function(res){
+					location.reload();
+				},
+				error : function(xhr){
+					alert("상태 : " + xhr.status)
+				},
+				dataType : 'text'
+			})
+	})
+})

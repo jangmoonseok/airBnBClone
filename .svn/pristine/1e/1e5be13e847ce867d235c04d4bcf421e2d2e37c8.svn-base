@@ -1,0 +1,75 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+import kr.or.ddit.bnb.admin.vo.QNA_ANSVO;
+
+public class QnAansDao implements IQnAansDao{
+	
+	private static QnAansDao dao;
+	private QnAansDao() { }
+	
+	
+	
+	public static QnAansDao getInstance() {
+		if(dao==null) dao = new QnAansDao();
+		return dao;
+	}
+
+	@Override
+	public int insertBoard(SqlMapClient smc, QNA_ANSVO qnaVo) throws SQLException {
+		int Board = 0;
+		Object obj = smc.insert("QNA.Board", qnaVo);
+		if(obj==null) Board =1;
+		return Board;		
+	}
+
+	
+
+	@Override
+	public int insertAnswer(SqlMapClient smc, QNA_ANSVO answerVO) throws SQLException {
+		int Ans = 0;
+		Object obj = smc.insert("QNA.Answer", answerVO); 
+		if(obj==null) Ans =1;
+		return Ans;
+	}
+
+	@Override
+	public int deleteQuestion(SqlMapClient smc, String qna_id) throws SQLException {
+		
+		return smc.delete("QNA.DeleteQna");
+	}
+
+
+
+	@Override
+	public int insertQuestion(SqlMapClient smc, String mem_id) throws SQLException {
+		int Question = 0;
+		Object obj = smc.insert("QNA.memberQuestion",mem_id);
+		if(obj==null) Question =1;
+		return Question;
+	}
+
+
+
+	@Override
+	public List<QNAVO> MemQuestionList(SqlMapClient smc) throws SQLException {
+		List<QNAVO> QuestionList = smc.queryForList("QNA.QuestionList");
+		return QuestionList;
+	}
+
+	@Override
+	public List<QNAVO> QuestionList(SqlMapClient smc) throws SQLException {
+		List<QNAVO> QuestionList = smc.queryForList("QNA.QuestionList");
+		return QuestionList;
+	}
+
+	
+
+	
+
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="manage">
+	
+	<!-- 구매자목록 -->
+	<select id ="getBuyerList" resultClass="BuyerVO">
+	select a.mem_id, a.mem_name, b.prod_id, b.sche_id, b.check_in, b.check_out
+	from member A, schedule B
+	where a.mem_id=b.mem_id
+	order by b.check_out desc 
+		
+	</select>	
+	
+	<!-- 구매자목록에서 선택 -->
+	<select id = "getbuyer" resultClass="PickBuyerVO">
+	select * from member where mem_id=#mem_id#
+	</select>
+	
+	<!-- 구매자목록 정보 삭제 -->
+
+	
+	<!--판매자 목록 -->
+	<select id ="getHostList" resultClass="HostVO">
+	
+	select a.host_id, a.mem_id, a.host_date, a.host_des, b.prod_name, b.prod_id
+    from  host A, prod B
+    where a.host_id=b.host_id
+    and b.accept='y'
+    order by host_date desc
+	
+	</select>
+	
+	<!--판매자목록에서 선택 -->
+	<select id="getHost" resultClass="PickHostVO">
+		select * from host where host_id=#host_id#
+	</select>
+	
+	<!--판매자 정보 삭제 -->
+	
+
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+

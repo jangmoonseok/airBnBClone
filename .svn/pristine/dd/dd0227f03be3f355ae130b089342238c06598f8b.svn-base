@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<!-- content에 자신의 OAuth2.0 클라이언트ID를 넣습니다. -->
+<meta name ="google-signin-client_id" content="439540300596-d2169cf7rsgbfugf7kh94tufq1phf27a.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body>
+<div class="g-signin2" onclick="onSignIn()"></div>
+
+<script type="text/javascript">
+	function onSignIn() {
+		var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+		id = profile.getId();
+		username = profile.getName();
+		img = profile.getImageUrl();
+		email = profile.getEmail();
+		alert('로그인 완료');
+		
+		post_to_url("http://localhost/dditBnb/main/index.jsp",
+			{'id' : id, 'username' : username, 'email' : email, 'img' : img}		
+		)
+	}
+	
+	function post_to_url(path, params, method='post') {
+		const form = document.createElement('form');
+		form.method = method;
+		form.action = path;
+		
+		for(const key in params) {
+			if(params.hasOwnProperty(key)) {
+				const hiddenField = document.createElement('input');
+				hiddenField.type = 'hidden';
+				hiddenField.name = key;
+				hiddenField.value = params[key];
+				form.appendChild(hiddenField);
+			}
+		}
+		
+		document.body.appendChild(form);
+		form.submit();
+	}
+	
+
+</script>
+
+<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+package kr.or.ddit.bnb.admin.vo;
+//관리자가 쓰는 테이블
+public class QNA_ANSVO {
+	
+	private String ans_id    ;
+	private String admin_id  ;
+	private String qna_id    ;
+	private String ans_con   ;
+	private String ans_date  ;
+	
+	public String getAns_id() {
+		return ans_id;
+	}
+	public void setAns_id(String ans_id) {
+		this.ans_id = ans_id;
+	}
+	public String getAdmin_id() {
+		return admin_id;
+	}
+	public void setAdmin_id(String admin_id) {
+		this.admin_id = admin_id;
+	}
+	public String getQna_id() {
+		return qna_id;
+	}
+	public void setQna_id(String qna_id) {
+		this.qna_id = qna_id;
+	}
+	public String getAns_con() {
+		return ans_con;
+	}
+	public void setAns_con(String ans_con) {
+		this.ans_con = ans_con;
+	}
+	public String getAns_date() {
+		return ans_date;
+	}
+	public void setAns_date(String ans_date) {
+		this.ans_date = ans_date;
+	}
+
+	
+	
+}

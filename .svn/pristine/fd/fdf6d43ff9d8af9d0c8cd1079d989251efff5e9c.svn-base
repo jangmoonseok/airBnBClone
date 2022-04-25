@@ -1,0 +1,138 @@
+@charset "UTF-8";
+
+a{
+	text-decoration: none;
+	outline: none;
+}
+
+
+button{
+	cursor: pointer;
+	border: none;
+	color: white;
+	font-size: 15px;
+	font-weight: bold;
+	transition:all 0.3s;
+}
+
+button:hover{
+	transform:scale(1.05);
+}
+
+#topContainer{
+	background: black;
+	color: white;
+}
+
+#logo{
+	padding: 50px;
+}
+
+#logo a{
+	display: flex;
+	align-items: center;
+	color: white;
+}
+
+#title{
+	margin-top:100px;
+	text-align: center;
+	font-size: 50px;
+	font-weight: bold;
+}
+
+#goHosting{
+	display: flex;
+	justify-content: center;
+	padding: 70px 0;
+}
+
+#goHosting button{
+	border: none;
+	background:	#FF385C;
+	border-radius: 10px;
+	padding: 15px 30px;
+	cursor: pointer;
+}
+
+#goHosting a{
+	color: white;
+}
+
+#goHosting a:hover{
+	text-decoration: none;
+}
+
+#midContainer{
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+
+#midContainer img{
+	border-radius: 20px;
+	margin: 50px;
+	width: 80%;
+}
+
+#hostHome_QnA{
+	position: absolute;
+	top: 50%;
+	display: flex;
+	justify-content: center;
+}
+
+#hostHome_QnA h2{
+	font-size: 60px;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+}
+
+#hostHome_QnA button{
+	margin-top: 50px;
+	padding: 15px 30px;
+	background: white;
+	color: black;
+	border-radius: 10px;
+	margin-left: 300px;
+}
+
+#hostHome_QnA button a{
+	color: black;
+}
+
+#hostHome_QnA button a:hover{
+	text-decoration: none;
+}
+
+/* footer */
+#footer{
+	background: #e3e2de;
+}
+
+#footer_list{
+	display: flex;
+	justify-content: center;
+	padding: 30px;
+}
+
+#footer_list li{
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+#footer_list ul{
+	margin: 10px 20px;
+}
+
+#footer_list h3{
+	font-weight: bold;
+	margin: 0 20px;
+}
+
+#footer_mark{
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+}

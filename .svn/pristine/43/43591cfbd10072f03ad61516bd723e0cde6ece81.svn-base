@@ -1,0 +1,96 @@
+package kr.or.ddit.bnb.reservation.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.member.vo.FavorListVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.bnb.reservation.vo.ReservationVO;
+import kr.or.ddit.bnb.reservation.vo.SchedulVO;
+
+public class ReservationDaoImpl implements IReservationDao{
+	//싱글톤 패턴
+	private static ReservationDaoImpl dao;
+	
+	private ReservationDaoImpl(){
+	}
+	
+	public static ReservationDaoImpl getInstance(){
+		if(dao == null) dao = new ReservationDaoImpl();
+		return dao;
+	}
+	
+	//검색 시작시 위치 자동완성반환
+	@Override
+	public List<ProdVO> locationReturn(SqlMapClient smc, String addr) throws SQLException {
+		return smc.queryForList("reservation.locationReturn", addr);
+	}
+
+	//숙소목록 검색
+	@Override
+	public List<ProdVO> searchProd(SqlMapClient smc, Map<String, Object> map) throws SQLException {
+		return smc.queryForList("reservation.searchProd", map);
+	}
+
+	//목록에서 필터링
+	@Override
+	public List<ProdVO> filter(SqlMapClient smc, Map<String, Object> map) throws SQLException {
+		return smc.queryForList("reservation.filter", map);
+	}
+
+	//이미지 
+	@Override
+	public List<String> getImg(SqlMapClient smc, String prod_id) throws SQLException {
+		return smc.queryForList("reservation.getImg", prod_id);
+	}
+	
+	//찜 목록 추가
+	@Override
+	public int addFavor(SqlMapClient smc, FavorListVO favorVO) throws SQLException {
+		int cnt = 0;
+		Object obj = smc.insert("reservation.addFavor", favorVO);
+		if(obj==null) cnt = 1;
+		
+		return cnt;
+	}
+	
+	//별점 평균 구하기
+	@Override
+	public double getStar(SqlMapClient smc, String prod_id) throws SQLException {
+		return (double) smc.queryForObject("reservation.getStar", prod_id);
+	}
+
+	//스케쥴 insert
+	@Override
+	public int insertSchedule(SqlMapClient smc, SchedulVO scheVo) throws SQLException {
+		int cnt = 0;
+		Object obj = smc.insert("reservation.insertSchedule", scheVo);
+		if(obj==null) cnt = 1;
+			
+		return cnt;
+	}
+
+	//예약 insert
+	@Override
+	public int insertReservation(SqlMapClient smc, ReservationVO reserVo) throws SQLException {
+		int cnt = 0;
+		Object obj = smc.insert("reservation.insertReservation", reserVo);
+		if(obj==null) cnt = 1;
+			
+		return cnt;
+	}
+
+	@Override
+	public int getSchePrice(SqlMapClient smc, Map<String, String> map) throws SQLException {
+		// TODO Auto-generated method stub
+		return (int)smc.queryForObject("reservation.getSchePrice", map);
+	}
+
+	
+
+	
+
+}

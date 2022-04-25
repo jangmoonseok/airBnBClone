@@ -1,0 +1,29 @@
+package kr.or.ddit.bnb.prod.vo;
+
+public class ProdConvenVO {
+	
+	private String prod_id;
+	private String conven_id;
+	private String conven_name;
+	
+	public String getConven_name() {
+		return conven_name;
+	}
+	public void setConven_name(String conven_name) {
+		this.conven_name = conven_name;
+	}
+	public String getProd_id() {
+		return prod_id;
+	}
+	public void setProd_id(String prod_id) {
+		this.prod_id = prod_id;
+	}
+	public String getConven_id() {
+		return conven_id;
+	}
+	public void setConven_id(String conven_id) {
+		this.conven_id = conven_id;
+	}
+	
+
+}

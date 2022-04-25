@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="QNA">
+		
+	<!-- QnA목록 관리자용-->
+	<select id = "QuestionList" resultClass="qnaVo">
+		select qna_id, mem_id, qna_title, qna_con, qna_date, qna_cate
+        from qna
+	</select>
+		
+	<!-- 답변 -->
+	<insert id = "Answer" parameterClass="answerVo">
+	 insert into qnaans 
+	 values('ans'||trim(TO_CHAR(ans_seq.nextval, '000')), 'admin', 
+	 (
+	 	select qna_id 
+	 	from qna 
+	 	where qna_id = #qna_id#), #ans_con#, sysdate
+	 )
+	</insert>
+
+	<!-- 관리자용 qna 상세보기 -->
+	<select id ="SeeQuestion" resultClass="answerVo">
+		 select a.qna_id, a.mem_id, a.qna_title, a.qna_con, a.qna_date,
+               b.admin_id, b.ans_con,b.ans_date, a.qna_cate
+        from qna A
+        left outer join qnaans B on(a.qna_id= b.qna_id)
+        where a.qna_id=#qna_id#
+	</select>
+	
+	<!-- 질문삭제 -->
+	<delete id ="DeleteQna" parameterClass="String">
+		delete from qna
+		where qna_id = #data#
+	</delete>
+
+	<!-- 회원용 qna 리스트 -->
+	<select id = "QuestionListmem" resultClass="questionListVo">
+		select qna_id, mem_id, qna_title, qna_con, qna_date, qna_cate
+        from qna
+	</select>
+	
+	<!-- 회원용 질문 -->
+	<insert id ="Question" parameterClass="questionVo">
+		insert into qna(qna_id, mem_id, qna_title, qna_con, qna_date, qna_cate)
+		values( 
+		'q'||trim(TO_CHAR(qna_seq.nextval, '000')),#mem_id#, #qna_title#, #qna_con#, sysdate, #qna_cate#) 
+	</insert>
+
+	<!-- 회원 상세 qna보기 -->
+	<select id ="SeeQuestionMem" resultClass="memberseequestionVo" parameterClass="memberseequestionVo">
+		 select a.qna_id, a.mem_id, a.qna_title, a.qna_con, a.qna_date,
+               b.admin_id, b.ans_con,b.ans_date, a.qna_cate
+        from qna A
+        left outer join qnaans B on(a.qna_id= b.qna_id)
+        where a.qna_id=#qna_id#
+          and a.qna_cate=#qna_cate#
+	</select>
+	
+	<!-- 회원 상세 답변보기 -->
+	<select id ="SeeAns" resultClass="answerVo" parameterClass="answerVo">
+		 select a.qna_id, a.mem_id, a.qna_title, a.qna_con, a.qna_date,
+               b.admin_id, b.ans_con,b.ans_date, a.qna_cate, b.ans_id
+        from qna A
+        left outer join qnaans B on(a.qna_id= b.qna_id)
+        where a.qna_id=#qna_id#
+          and a.qna_cate=#qna_cate#
+	</select>
+
+	<!--예약 및 여행  -->
+	<select id = "QuestionCate" resultClass="questionVo" parameterClass="string">
+		select * from qna
+		where qna_cate=#data#
+	</select>
+</sqlMap>
+
+
+
+

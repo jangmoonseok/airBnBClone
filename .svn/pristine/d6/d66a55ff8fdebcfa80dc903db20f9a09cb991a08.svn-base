@@ -1,0 +1,43 @@
+package kr.or.ddit.bnb.reservation.dao;
+
+import java.io.IOException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+public class CrollingTest {
+
+	public static void main(String[] args) {
+		String URL = "https://www.airbnb.co.kr/s/%EC%A0%9C%EC%A3%BC%EB%8F%84/homes?place_id=ChIJRUDITFTjDDURMb8emNI2vGY&refinement_paths%5B%5D=%2Fhomes&adults=0&children=0&infants=0&pets=0&search_type=AUTOSUGGEST";
+		Document doc;
+
+		try {
+			doc = Jsoup.connect(URL).get();
+//			Elements ele = doc.select("#site-content > div > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)"
+//					+ " > div > div > div > div > div > div > div > div._168ht2w > div > div._5ltqju > div > div > div > a > div > picture > ._6tbg2q ");
+			
+//			String imgLink = ele.get(0).attr("src");
+//			
+//			System.out.println(imgLink);
+			
+			Elements ele = doc.select("#site-content > div.a5ur7i2.a19cg8fd.slyerxe.aogojft.ay00grh.dir.dir-ltr > div > div:nth-child(5) > div > div > div > div > div > div > div.c1yo0219.dir.dir-ltr > div > div > div > div > div > div:nth-child(1) > div > div > div.c1l1h97y.lo4oprd.dir.dir-ltr > div > div > div > div.cm4lcvy.dir.dir-ltr > div.idt4x4.dir.dir-ltr > div.td9wtjk.dir.dir-ltr > div");
+			
+			
+			for (int i = 0; i < ele.size(); i++) {
+	            // titleElements text 추출
+				String dd = ele.get(i).attr("tabindex");
+				System.out.println(dd);
+	            String title = ele.get(i).text();
+            	System.out.println(title);
+	        }
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}

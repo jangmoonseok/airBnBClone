@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="reservation">
+
+	<!-- 위치검색 자동완성 -->
+	<select id="locationReturn" resultClass="prodVo" parameterClass="String">
+		select * from prod where prod_add1 like '%'||#data#||'%'
+	</select>
+	
+	<!-- 숙소 검색 -->
+	<!-- 필요한 파라미터 : 주소(String)[, 체크인 날짜(date), 체크아웃 날짜(date), 인원수(int)] -->
+	<!-- [ ]는 동적쿼리로 구현 -->
+	<select id="searchProd" resultClass="prodVo" parameterClass="map">
+		SELECT DISTINCT(prod.PROD_ID),PROD_TYPE, PROD_PART, PROD_ADD1, PROD_ADD2, PROD_NAME, PROD_DES, PROD_PER, PROD_DATE, PROD_PRICE, HOST_ID, ACCEPT,
+		(select nvl(avg(REVIEW_STAR),0)
+		from REVIEW q, RESERVATION w, SCHEDULE e, PROD r
+		where q.RESER_ID = w.RESER_ID
+		and w.SCHE_ID = e.SCHE_ID
+		and e.prod_ID = r.prod_id
+		and r.prod_id = prod.prod_id) as star
+		FROM PROD
+		LEFT JOIN SCHEDULE ON PROD.PROD_ID = SCHEDULE.PROD_ID 
+		WHERE PROD_ADD1 LIKE '%'||#addr#||'%'
+		
+		<isNotEmpty property="check_in">
+			AND NOT SCHEDULE.CHECK_IN BETWEEN #check_in# AND #check_out#
+			AND NOT SCHEDULE.CHECK_OUT BETWEEN #check_in# AND #check_out#
+			or SCHEDULE.SCHE_ID is NULL
+		</isNotEmpty>	
+		
+		<isNotEmpty property="person">
+			<![CDATA[
+			AND PROD_PER >= #person#
+			]]>
+		</isNotEmpty>
+		and ACCEPT = 'y'
+		and prod_remove = 'n'
+	</select>
+	
+	<!-- 필터링 -->
+	<select id ="filter" resultClass="prodVo" parameterClass="map">
+		select DISTINCT(a.PROD_ID),PROD_TYPE, PROD_PART, PROD_ADD1, PROD_ADD2, PROD_NAME, PROD_DES, PROD_PER, PROD_DATE, PROD_PRICE, HOST_ID, ACCEPT, 
+		(select nvl(avg(REVIEW_STAR),0)
+		from REVIEW q, RESERVATION w, SCHEDULE e, PROD r
+		where q.RESER_ID = w.RESER_ID
+		and w.SCHE_ID = e.SCHE_ID
+		and e.prod_ID = r.prod_id
+		and r.prod_id = a.prod_id) as star
+		from prod a,
+		(select prod.prod_id as pid
+		from prod
+		left join SCHEDULE on prod.PROD_ID = SCHEDULE.PROD_ID 
+		where PROD_ADD1 like '%'||#addr#||'%'
+		<isNotEmpty property="check_in">
+			AND NOT SCHEDULE.CHECK_IN BETWEEN #check_in# AND #check_out#
+			AND NOT SCHEDULE.CHECK_OUT BETWEEN #check_in# AND #check_out#
+			or SCHEDULE.SCHE_ID is NULL
+		</isNotEmpty>	
+		
+		<isNotEmpty property="person">
+			<![CDATA[
+			AND PROD_PER >= #person#
+			]]>
+		</isNotEmpty>
+		) b
+		
+		where a.PROD_id = b.pid
+		
+		<isNotEmpty property="max_price">
+			<![CDATA[
+			and a.PROD_PRICE >= #min_price#
+			and a.PROD_PRICE <= #max_price#
+			]]>
+		</isNotEmpty>
+		
+		<isNotEmpty property="type">
+			and a.PROD_TYPE = #type#
+		</isNotEmpty>
+		
+		<isNotEmpty property="part">
+			and a.PROD_PART = #part#
+		</isNotEmpty>
+		
+		and ACCEPT = 'y'
+		and prod_remove = 'n'
+		
+		<isNotEmpty property="sort">
+			order by $sort$ $order$
+		</isNotEmpty>
+	</select>
+	
+	<!-- 이미지 링크 불러오기 -->
+	<select id ="getImg" resultClass="string" parameterClass="string">
+		select IMG_LINK
+		from PROD_IMG
+		where prod_id = #prod_id#
+	</select>
+	
+	<!-- 찜 목록 추가 -->
+	<insert id="addFavor" parameterClass="favorVO">
+		insert into FAVORITE(FAV_ID, MEM_ID, PROD_ID)
+		values('f'||trim(TO_CHAR(fav_seq.nextval,'000')), #mem_id#, #prod_id#)
+	</insert>
+	
+	<!-- 별점 평균 구하기 -->
+	<select id ="getStar" resultClass="double" parameterClass="string">
+		select nvl(avg(REVIEW_STAR),0)
+		from REVIEW a, RESERVATION b, SCHEDULE c, PROD d
+		where a.RESER_ID = b.RESER_ID
+		and b.SCHE_ID = c.SCHE_ID
+		and c.prod_ID = d.prod_id
+		and d.prod_id = #prod_id#
+	</select>
+	
+	<!-- 숙소 별 편의시설 구하기 -->
+	<select id ="getConven" resultClass="convenVo" parameterClass="string">
+		select *
+		from CONVEN a, PRODCONVEN b
+		where a.CONVEN_ID = b.CONVEN_ID
+		and b.PROD_ID = #prod_id#
+	</select>
+	
+	<!-- 선택한 일정에 대한 요금 확인 -->
+	<select id ="getSchePrice" resultClass="int" parameterClass="map" remapResults="true">
+		select floor(to_number(TO_DATE(#check_out#) - TO_DATE(#check_in#)) * (select PROD_PRICE from prod where prod_id = #prod_id#))
+		from dual
+	</select>
+	
+	<!-- 숙소 예약 : 스케쥴 테이블 등록 -->
+	<insert id="insertSchedule" parameterClass="scheVo">
+		insert into schedule(sche_id, prod_id, mem_id, check_in, check_out, sche_price)
+		values('s'||trim(TO_CHAR(sche_seq.nextval,'000')), #prod_id#, #mem_id#,
+		#check_in#, #check_out#, #sche_price# )
+	</insert>
+	
+	<!-- 숙소 예약 : 예약 테이블 등록 -->
+	<insert id="insertReservation" parameterClass="reservVo">
+		insert into RESERVATION(RESER_ID, SCHE_ID, RESER_PER, RESER_REQ, RESER_PRICE, RESER_DATE)
+		values('r'||trim(TO_CHAR(reser_seq.nextval,'000')), (select SCHE_ID from schedule where SCHE_ID=(select max(SCHE_ID)from schedule)), #reser_per#, #reser_req#, #reser_price#, sysdate)
+	</insert>
+	
+	<!-- 결제 : 결제 테이블 추가-->
+	<insert id="insertPayment" parameterClass="map">
+		insert into PAYMENT(PAY_ID, RESER_ID, PAY_STAT, PAY_DATE)
+		values(#pay_id#, #reser_id#, '결제완료', sysdate)
+	</insert>
+	
+	<!-- 결제 : 예약 테이블 변경 -->
+	<insert id="updateReserv" parameterClass="string">
+		update RESERVATION
+		set RESER_STAT = '결제완료'
+		where RESER_ID = #reser_id#
+	</insert>
+	
+	<!-- 예약할 때 날짜가 겹치는지 확인 -->
+	<select id="checkSchedule" parameterClass="scheVo" resultClass="int">
+	 select count(*)
+      from schedule a, prod b 
+       where a.prod_id = b.prod_id
+       and a.prod_id = #prod_id#
+       and #check_in# between a.check_in 
+       and to_date(a.check_out) - 1; 
+	</select>
+	
+	
+</sqlMap>

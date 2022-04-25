@@ -1,0 +1,316 @@
+package kr.or.ddit.bnb.reservation.serveice;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.member.vo.FavorListVO;
+import kr.or.ddit.bnb.prod.vo.ConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.bnb.reservation.dao.IReservationDao;
+import kr.or.ddit.bnb.reservation.dao.ReservationDaoImpl;
+import kr.or.ddit.bnb.reservation.vo.PaymentVO;
+import kr.or.ddit.bnb.reservation.vo.ReservationDetailVO;
+import kr.or.ddit.bnb.reservation.vo.ReservationVO;
+import kr.or.ddit.bnb.reservation.vo.SchedulVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+public class ReservationServiceImpl implements IReservationService{
+
+	private IReservationDao dao;
+	private SqlMapClient smc;
+	
+	//싱글톤패턴
+	private static ReservationServiceImpl service;
+	private ReservationServiceImpl() {
+		dao = ReservationDaoImpl.getInstance();
+		smc = SqlMapClientFactory.getsqlMapClient();
+	}
+	public static ReservationServiceImpl getInstance() {
+		if(service == null) service = new ReservationServiceImpl();
+		return service;
+	}
+	
+	//검색 시작시 위치 자동완성반환
+	//주소 검색시 관련 검색어 노출되도록 like 연산자 사용
+	//예) '제주' 검색 시, 제주와 관련된 항목 노출
+	//servlet에서 상세주소는 자르고 노출하는 작업이 필요함.
+	@Override
+	public List<ProdVO> locationReturn(String addr) {
+		List<ProdVO> list = null;
+		
+		try {
+			list = dao.locationReturn(smc, addr);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//숙소목록 검색
+	//파라미터 맵 : 위치(String)[, 체크인 날짜(date), 체크아웃 날짜(date), 인원수(int)]
+	//[ ]는 동적쿼리 처리(값이 있을 경우만 사용)
+	@Override
+	public List<ProdVO> searchProd(Map<String, Object> map) {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		List<ProdVO> temp = null;
+		List<String> linkList = null;
+//		double star = 0.0;
+		List<ConvenVO> conven = null;
+		
+		try {
+			temp = dao.searchProd(smc, map);
+			for(ProdVO vo : temp) {
+				linkList = dao.getImg(smc, vo.getProd_id());
+//				star = dao.getStar(smc, vo.getProd_id());
+				conven = dao.getConven(smc, vo.getProd_id());
+				vo.setLink(linkList);
+//				vo.setStar(star);
+				vo.setConvenVo(conven);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//목록에서 필터링
+	//파라미터 맵 : 위치(String addr)[, 체크인 날짜(date check_in), 체크아웃 날짜(date check_out), 
+	//		인원수(int person), 최저요금(int min_price), 최대요금(int max_price), 타입(String type), 파트(String part), 
+	//		정렬기준컬럼(String sort => prod_price 등의 값), 정렬방식(String order => asc/desc)]
+	//[ ]는 동적쿼리 처리(값이 있을 경우만 사용, 생략가능)
+	//주의사항 : 체크인 날짜가 있으면 아웃 날짜도 반드시 있어야 함. 정렬방식(asc/desc)를 선택하려면 정렬기준컬럼도 반드시 있어야 함.
+	//22.04.15 별점 추가
+	//22.04.15 편의시설 추가
+	@Override
+	public List<ProdVO> filter(Map<String, Object> map) {
+		List<ProdVO> list = new ArrayList<ProdVO>();
+		List<ProdVO> temp = null;
+		List<String> linkList = null;
+		double star = 0.0;
+		List<ConvenVO> conven = null;
+		
+		try {
+			temp = dao.filter(smc, map);
+			for(ProdVO vo : temp) {
+				linkList = dao.getImg(smc, vo.getProd_id()); //이미지
+				star = dao.getStar(smc, vo.getProd_id()); //별점
+				conven = dao.getConven(smc, vo.getProd_id()); //편의시설
+				vo.setLink(linkList);
+				vo.setStar(Math.round(star * 10) / 10);
+				vo.setConvenVo(conven);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//이미지 - 사용 x
+	//파라미터는 검색결과에서 받아온 String prod_id
+	@Override
+	public List<String> getImg(String prod_id) {
+		List<String> list = null;
+		
+		try {
+			list = dao.getImg(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//찜 목록 추가
+	//파라미터는 vo : 지금 검색중인 회원의 String mem_id, 선택한 상품의 String prod_id
+	@Override
+	public int addFavor(FavorListVO favorVO) {
+		int cnt = 0;
+		try {
+			cnt = dao.addFavor(smc, favorVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	//별점 구하기 - 사용 x
+	//파라미터는 검색결과에서 받아온 String prod_id 
+	@Override
+	public double getStar(String prod_id) {
+		double star = 0.0;
+		try {
+			star = dao.getStar(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return star;
+	}
+	
+	//편의시설 구하기 - 사용 x
+	//파라미터는 검색결과에서 받아온 String prod_id 
+	@Override
+	public List<ConvenVO> getConven(String prod_id) {
+		 List<ConvenVO>  list = null;
+		
+		try {
+			list = dao.getConven(smc, prod_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//일정에 대한 금액 구하기
+	//파라미터 : 체크인 날짜(String check_in), 체크아웃 날짜(String check_out), 상품코드(String prod_id) 
+	//계산을 위해서 날짜를 String으로 받았음... Date 타입으로는 도저히 해결이 안 됨...
+	@Override
+	public int getSchePrice(Map<String, Object> map) {
+		int res = 0;
+		
+		try {
+			res = dao.getSchePrice(smc, map);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}	
+	
+	//스케쥴 인서트 - 따로 사용x
+	@Override
+	public int insertSchedule(SchedulVO scheVo) {
+		int cnt = 0;
+//		try {
+//			cnt = dao.insertSchedule(smc, scheVo);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+		return cnt;
+	}
+	
+	//예약 등록
+	//파라미터 : 
+	//	scheVo - 체크인 날짜(Date check_in), 체크아웃 날짜(Date check_out), 
+	//			 스케쥴에 대한 요금(int sche_price, 위에서 구한 바 있음.. 원한다면 이 안에 넣을 수 도 있음)
+	//	reserVo - 예약인원(int reser_per), 예약금액(int reser_price, 스케쥴 요금이랑 같은 값..인원에 대한 가중치는 논의 필요), 
+	//			  요청사항(String reser_req)
+	@Override
+	public String insertReservation(SchedulVO scheVo, ReservationVO reserVo) {
+		String reser_id = null;
+		try {
+			String sche_id = dao.insertSchedule(smc, scheVo);
+			reserVo.setSche_id(sche_id);
+			reser_id = dao.insertReservation(smc, reserVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reser_id;
+	}
+	
+	//결제 등록
+	//결제 성공하면 예약상태 update
+	//파라미터 : Map<String, String> paramap -> String reser_id : 예약ID, String pay_id : 결제ID
+	//컨트롤러 만들어 놓음....
+	@Override
+	public int insertPayment(Map<String, String> paramap) {
+		int cnt = 0;
+		String reser_id = paramap.get("reser_id");
+		try {
+			cnt = dao.insertPayment(smc, paramap);
+			dao.updateReserv(smc, reser_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	@Override
+	public ProdVO getProdDetail(String prod_id) {
+		ProdVO prodVo = new ProdVO();
+		List<String> linkList = null;
+		List<ConvenVO> conven = null;
+		
+		try {
+			prodVo = dao.getProdDetail(smc, prod_id);
+			linkList = dao.getImg(smc, prod_id);
+			conven = dao.getConven(smc, prod_id);
+			prodVo.setConvenVo(conven);
+			prodVo.setLink(linkList);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return prodVo;
+	}
+	@Override
+	public int checkSchedule(SchedulVO scheVo) {
+		int cnt=0;
+		
+		try {
+			cnt=dao.checkSchedule(smc, scheVo);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	@Override
+	public List<SchedulVO> checkReserList(String prodId) {
+		List<SchedulVO> list=null;
+		
+		try {
+			list=dao.checkReserList(smc, prodId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	@Override
+	public List<SchedulVO> alreadayUseProd(String prodId) {
+	  List<SchedulVO> list=null;
+
+		try {
+			list=dao.alreadayUseProd(smc, prodId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	@Override
+	public int removeFavor(Map<String, String> map) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.removeFavor(smc, map);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	@Override
+	public ReservationDetailVO getReserDetail(String reser_id) {
+		ReservationDetailVO reserDetail = null;
+		
+		try {
+			reserDetail = dao.getReserDetail(smc, reser_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reserDetail;
+	}
+	
+
+
+}

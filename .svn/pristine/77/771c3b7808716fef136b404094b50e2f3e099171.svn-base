@@ -1,0 +1,61 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.BuyerVO;
+import kr.or.ddit.bnb.admin.vo.HostVO;
+
+public class ManagementDao implements IManagementDao{
+	
+	private static ManagementDao dao;
+	private ManagementDao() { }
+	
+	public static ManagementDao getInstance() {
+		if(dao==null) dao = new ManagementDao();
+		return dao;
+	}
+
+	@Override
+	public List<HostVO> getHostList(SqlMapClient smc) throws SQLException {
+		List<HostVO> host = smc.queryForList("host.getHostList");
+		return host;
+	}
+
+	@Override
+	public int deleteHost(SqlMapClient smc, String host_id) throws SQLException {		
+		return smc.delete("host.deleteHost", host_id);
+	}
+
+	@Override
+	public int selectHost(SqlMapClient smc, String host_id) throws SQLException {
+		return (int)smc.queryForObject("host.gethost",host_id);
+	}
+
+	
+	@Override
+	public List<BuyerVO> getBuyerList(SqlMapClient smc) throws SQLException {
+		List<BuyerVO> buyer = smc.queryForList("buyer.getBuyerList");
+		return buyer;
+	}
+
+	@Override
+	public int selectBuyer(SqlMapClient smc, String mem_id) throws SQLException {
+		return (int)smc.queryForObject("buyer.getbuyer", mem_id);
+	}
+
+
+	@Override
+	public int deleteBuyer(SqlMapClient smc, String mem_id) throws SQLException {
+		
+		return smc.delete("buyer.deleteBuyer",mem_id);
+	}
+
+	
+	
+	
+
+}

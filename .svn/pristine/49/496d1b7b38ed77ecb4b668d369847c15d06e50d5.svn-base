@@ -1,0 +1,15 @@
+/* API */
+
+if($('#signUpForm').hasClass('show')){
+	$.ajax({
+		url :'/dditBnb/getCaptchaImg.do',
+		type : 'post',
+		success : function(res){
+			
+		},
+		error : function(xhr){
+			
+		},
+		dataType:'json'
+	})
+}

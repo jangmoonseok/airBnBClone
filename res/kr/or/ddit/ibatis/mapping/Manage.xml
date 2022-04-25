@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="manage">
+	
+	<!-- 구매자목록 -->
+	<select id ="getBuyerList" resultClass="BuyerVO">
+	select a.mem_id, a.mem_name, b.prod_id, b.sche_id, b.check_in, b.check_out
+	from member A, schedule B
+	where a.mem_id=b.mem_id
+	order by b.check_out desc 
+		
+	</select>	
+	
+	<!-- 구매자목록에서 선택 -->
+	<select id = "getbuyer" resultClass="PickBuyerVO">
+	select mem_id, mem_name, mem_pass, mem_email, mem_tel, mem_addr, TO_CHAR(mem_birth, 'YYYY-MM-DD') as mem_birth, mem_hint, mem_ans, TO_CHAR(mem_join, 'YYYY-MM-DD') as mem_join  from member where mem_id=#mem_id#
+	</select>
+	
+	<!-- 구매자목록 정보 삭제 -->
+	
+	<!--판매자 목록 -->
+	<select id ="getHostList" resultClass="HostVO">
+	
+	select a.host_id, a.mem_id, a.host_date, a.host_des, b.prod_name, b.prod_id
+    from  host A, prod B
+    where a.host_id=b.host_id
+    and b.accept='y'
+    order by host_date desc
+	
+	</select>
+	
+	<!--판매자목록에서 선택 -->
+	<select id="getHost" resultClass="PickHostVO">
+		select host_id, mem_id, to_char(host_date,'YYYY-MM-DD') as host_date, host_des from host where host_id=#host_id#
+	</select>
+	
+	<!--판매자 정보 삭제 -->
+	
+
+	<!-- 호스트 전체 목록 -->
+	<select id="getAllHostList" resultClass="HostVO">
+		select host_id, mem_id, to_char(host_date,'YYYY-MM-DD') as host_date, host_des from host
+		order by host_id desc
+	</select>
+	
+	<!-- 호스트 별 등록 숙소 목록 -->
+	<select id="getHostProd" resultClass="prodVo" parameterClass="String">
+		select * from prod
+		where host_id = #data#
+		order by prod_id desc
+	</select>
+	
+	<!-- 관리자 로그인 -->
+	<select id="adminLogin" parameterClass="map" resultClass="String">
+		select admin_id from admin where admin_id = #admin_id# and admin_pass = #admin_pass#
+	</select>
+	
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+

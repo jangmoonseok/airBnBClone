@@ -1,0 +1,24 @@
+package kr.or.ddit.bnb.prod.service;
+
+import java.sql.SQLException;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.vo.ProdConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdImgVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public interface IProdService {
+	
+	
+	//상품숙소 등록
+	public int insertProd(ProdVO prodVo,ProdImgVO prodimgVo,ProdConvenVO prodconvenVo);
+	
+	//상품이미지 등록 
+	public int insertProdImg(ProdImgVO prodimgVo);
+	
+	//상품편의시설 등록 
+	public int insertProdConven(ProdConvenVO prodconvenVo);
+	
+
+}

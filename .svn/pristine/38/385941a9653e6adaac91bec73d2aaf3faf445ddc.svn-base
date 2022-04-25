@@ -1,0 +1,32 @@
+package kr.or.ddit.bnb.member.dao;
+
+import java.sql.SQLException;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+import kr.or.ddit.bnb.member.vo.MemberVO;
+
+public interface IMemberDao {
+	// 회원가입
+	public int insertMember(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// 로그인
+	public MemberVO getMember(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// id 중복검사
+	public int idCheck(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 아이디 찾기
+	public String findId(SqlMapClient smc, MemberVO memVo) throws SQLException;
+		
+	// 비밀번호 찾기
+	public MemberVO findPass(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// 비밀번호 재설정
+	public int updatePass(SqlMapClient smc, String memPass) throws SQLException;
+	
+	// 마이페이지/회원정보 조회
+	public MemberVO getMemberList(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 마이페이지/회원탈퇴
+	public int deleteMember(SqlMapClient smc, String memId) throws SQLException;
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="room">
+	
+	<delete id="deleteRoom" parameterClass="String">
+		delete from prod 
+		where prod_id=#prod_id#
+	</delete>
+	
+	<select id = "getroomList" resultClass="roomVO">
+		select * from prod	
+	</select>
+
+	
+	<select id ="waitingRoomList" resultClass="roomVO">
+		select * 
+		from prod 
+		where accept='n'
+		
+	</select>
+	
+	<insert id="permissionRoom">
+		update prod
+   		set host_id = host_id +1
+   		where host_id = 'n'
+
+	</insert>
+	
+	<delete id ="denyRoom" parameterClass="String">
+	
+	    delete from prod 
+  		where accept='n'
+   		and prod_id = #prod_id#
+	
+	</delete>
+
+</sqlMap>

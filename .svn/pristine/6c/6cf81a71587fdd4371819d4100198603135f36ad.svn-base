@@ -1,0 +1,427 @@
+package kr.or.ddit.bnb.admin.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+import kr.or.ddit.bnb.admin.service.IManagementService;
+import kr.or.ddit.bnb.admin.service.IQnAansService;
+import kr.or.ddit.bnb.admin.service.IviewRoomService;
+import kr.or.ddit.bnb.admin.service.ManagementService;
+import kr.or.ddit.bnb.admin.service.QnAansService;
+import kr.or.ddit.bnb.admin.service.viewRoomService;
+import kr.or.ddit.bnb.admin.vo.BuyerVO;
+import kr.or.ddit.bnb.admin.vo.HostVO;
+import kr.or.ddit.bnb.admin.vo.PickBuyerVO;
+import kr.or.ddit.bnb.admin.vo.PickHostVO;
+import kr.or.ddit.bnb.admin.vo.QNAVO;
+import kr.or.ddit.bnb.admin.vo.QNA_ANSVO;
+import kr.or.ddit.bnb.admin.vo.RoomVO;
+
+public class RoomviewController {
+
+	private Scanner scan = new Scanner(System.in);
+	private IviewRoomService service;
+	private IManagementService service1;
+	private IQnAansService service2;
+	private String sysdate;
+	
+	public RoomviewController() {
+		service = viewRoomService.getInstance();
+		service1 = ManagementService.getInstance();
+		service2 = QnAansService.getInstance();
+		
+	}
+	
+	public void start() {
+		while(true) {
+			int choice = displayMenu();
+			switch(choice) {
+				case 1: //숙소 조회
+					viewRoom(); break;
+				case 2://숙소 삭제
+					deleteRoom(); break;
+					
+				case 3://호스트 정보조회리스트
+					managehost(); break;
+				case 4:
+					managehostpick(); break;
+				case 5:
+					deletehost(); break;			
+					
+				case 6:
+					managebuyer(); break;
+				case 7:
+					managebuyerpick(); break;
+				case 8://구매자삭제
+					deletebuyer(); break;
+					
+				case 9:
+					waitingRoom(); break;
+				case 10:
+					permissionRoom(); break;
+				case 11:
+					denyRoom(); break;
+					
+				case 12:
+					QuestionList(); break;
+				case 13:
+					Answer(); break;
+				case 14:
+					deleteQuestion(); break;
+						
+				case 15:
+					memberQuestionList(); break;
+				case 16:
+					memberQuestionWrite(); break;
+//				case 17:
+//					room(); break;
+	
+			}
+		}
+	}
+
+
+	private void room(String prod_id) {
+		
+//		System.out.print("상세보기할 prod_id 입력 > ");
+//		prod_id = scan.next();
+//		Map<String, Object> room = new HashMap<String, Object>();
+//		room.put("prod_id", prod_id);
+//		
+//		RoomVO roomVo = new roomVO();
+//		roomVo = service.Room(prod_id);
+//		
+//		System.out.println("--------------------------");
+//		
+//		System.out.println();
+//
+//		}
+		
+	}
+
+	private void memberQuestionWrite() { //회원용
+		
+		scan.nextLine(); // 버퍼 비우기
+		System.out.println();
+		System.out.println("새글 작성하기");
+		System.out.println("-----------------------------------");
+		System.out.print("- 제 목 : ");
+		String title = scan.nextLine();
+		
+		System.out.print("- 작성자 : ");
+		String writer = scan.nextLine();
+		
+		System.out.print("- 내 용 : ");
+		String content = scan.nextLine();
+		
+		QNAVO boardVo = new QNAVO();
+		boardVo.setQna_id(content);
+		boardVo.setMem_id(content);
+		boardVo.setQna_title(title);
+		boardVo.setQna_con(content);
+		
+		int cnt = service2.insertQuestion(boardVo);
+		
+		if(cnt>0) {
+			System.out.println("새글이 추가되었습니다.");
+		}else {
+			System.out.println("새글 추가 실패!!!");
+		}
+		
+		
+		
+		
+	}
+
+	private void deleteQuestion() {
+		System.out.print("삭제할 qna ID를 입력하세요> ");
+		String qna_id = scan.next();
+		
+		int qna = service2.deleteQuestion(qna_id);
+		
+		if(qna>0) {
+			System.out.println(qna_id+"삭제 성공");
+		}else {
+			System.out.println(qna_id+"삭제 실패");
+		}
+	}
+
+	private void denyRoom() {
+		System.out.print("등록거절할 숙소 ID를 입력하세요> ");
+		String prod_id = scan.next();
+		
+		int host = service.deleteRoom(prod_id);
+		
+		if(host>0) {
+			System.out.println(prod_id+"삭제 성공");
+		}else {
+			System.out.println(prod_id+"삭제 실패");
+		}
+		
+	}
+
+	private void permissionRoom() {
+		System.out.print("등록승인할 숙소 ID를 입력하세요> ");
+		String prod_id = scan.next();
+		
+		int permission = service.permissionRoom(prod_id);
+		
+		if(permission>0) {
+			System.out.println(prod_id+"승인 성공");
+		}else {
+			System.out.println(prod_id+"승인 실패");
+		}
+		
+	}
+
+
+
+	public static void main(String[] args) {
+		new RoomviewController().start();
+	}
+	private int displayMenu() {
+		System.out.println(" == 작 업 선 택 ==");
+		System.out.println(" 1. 숙소조회 ok");
+		System.out.println(" 2. 숙소삭제 ");
+		System.out.println();
+		System.out.println(" 3. 호스트리스트 ok");
+		System.out.println(" 4. 호스트 선택 ");
+		System.out.println(" 5. 호스트 삭제");
+		System.out.println();
+		System.out.println(" 6. 구매자리스트 ok");
+		System.out.println(" 7. 구매자선택 V");
+		System.out.println(" 8. 구매자 삭제 V");
+
+		System.out.println(" 9. 등록요청된 숙소리스트 ok");
+		System.out.println(" 10. 숙소 등록승인 ok");
+		System.out.println(" 11. 숙소 등록거절 ok");
+		System.out.println();
+		System.out.println(" 12. QnA목록 ok");
+		System.out.println("13. 답변작성 ");
+		System.out.println("14 답변삭제");
+		System.out.println();
+		System.out.println("15 회원용 게시판 조회 ok");
+		System.out.println("16 회원용 게시판 작성 ");
+		System.out.println();
+		System.out.print("원하는 작업번호 >> ");
+		return scan.nextInt();
+	}
+
+	
+
+	private void deletebuyer() {
+		System.out.print("삭제할 스케줄ID를 입력하세요> ");
+		String sche_Id = scan.next();
+		
+		int mem = service1.deleteBuyer(sche_Id);
+		
+		if(mem>0) {
+			System.out.println(sche_Id+"삭제 성공");
+		}else {
+			System.out.println(sche_Id+"삭제 실패");
+		}
+		
+	}
+
+	private void deletehost() {
+		System.out.print("삭제할 호스트ID를 입력하세요> ");
+		String host_id = scan.next();
+		
+		int host = service1.deleteBuyer(host_id);
+		
+		if(host>0) {
+			System.out.println(host_id+"삭제 성공");
+		}else {
+			System.out.println(host_id+"삭제 실패");
+		}
+		
+	}
+
+	private void deleteRoom() {
+		System.out.println();
+		System.out.println("삭제할 정보를 입력하세요.");
+		System.out.print("삭제할 숙소ID >> ");
+		String prod_id = scan.next();
+		
+		int room = service.deleteRoom(prod_id);
+		if(room>0) {
+			System.out.println(prod_id + "삭제 성공");
+		}else {
+			System.out.println(prod_id + "삭제 실패");
+		}
+		
+	}
+	
+	private void memberQuestionList() { 
+		
+		List<QNAVO> QuestionList = service2.QuestionList();
+		
+		System.out.println();
+		System.out.println("------------------------");
+		
+		if(QuestionList==null || QuestionList.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(QNAVO qnaVo:QuestionList) {
+				System.out.println(qnaVo.toString());
+			}
+		}
+		
+		
+	}
+	
+	
+	private void managehostpick() {	
+		System.out.println();
+		System.out.print("host_id >>");
+		
+		List<PickHostVO> host_info = service1.getHost();
+		System.out.println();
+
+		if(host_info ==null || host_info.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(PickHostVO pickHostVo: host_info) {
+				System.out.println(pickHostVo.toString());
+			}
+		}
+		
+		
+		
+	}
+	private void managebuyerpick() {
+		System.out.println();
+		System.out.print("구매자 mem_id >>");
+		
+		String mem_id = scan.next();
+		
+		
+		List<PickBuyerVO> buyer = service1.getBuyer();
+		System.out.println();
+		System.out.println("-----------------------------------");
+		if(buyer==null||buyer.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(PickBuyerVO buyerVo : buyer) {
+				System.out.println(buyerVo.toString());
+				
+			}
+		}
+		
+
+	}
+	
+	private void waitingRoom() {
+		System.out.println();
+		System.out.println("등록요청된 숙소 리스트");
+		
+		List<RoomVO> waitingroomList = service.waitingRoomList();
+		System.out.println();
+		System.out.println("-----------------------------------");
+		if(waitingroomList==null || waitingroomList.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(RoomVO roomVo:waitingroomList) {
+				System.out.println(roomVo.toString());
+			}
+		}
+
+	}
+	
+	private void Answer() {
+		System.out.println("답변할 ID를 입력하세요>");
+		String qna_Id= scan.next();
+		
+		System.out.print("답변 >> ");
+		String answer = scan.next();
+		
+		QNA_ANSVO ansVo = new QNA_ANSVO();
+		ansVo.setAns_con(answer);
+		ansVo.setAns_date(sysdate);
+		
+		int cnt = service2.insertAnswer(ansVo);
+		
+		if(cnt>0) {
+			System.out.println("답변성공");
+		}else {
+			System.out.println("답변실패");
+		}
+	}
+
+	
+	private void QuestionList() {
+		List<QNAVO> QuestionList = service2.QuestionList();
+		
+		System.out.println();
+		System.out.println("------------------------");
+		
+		if(QuestionList==null || QuestionList.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(QNAVO qnaVo:QuestionList) {
+				System.out.println(qnaVo.toString());
+			}
+		}
+		
+		
+	}
+	private void managebuyer() {
+		List<BuyerVO> buyerList = service1.getBuyerList();
+
+		System.out.println();
+		System.out.println("-----------------------------------");
+		if(buyerList==null ||buyerList.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(BuyerVO buyerVo:buyerList) {
+				
+				System.out.println(buyerVo.toString());
+
+			}
+		}
+
+	}
+
+	private void managehost() {
+		List<HostVO> hostList = service1.getHostList();
+		
+		System.out.println();
+		System.out.println("-----------------------------------");
+		if(hostList==null ||hostList.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(HostVO hostVo:hostList) {
+				System.out.println(hostVo.getHost_id());
+				
+			}
+		}
+	}
+	
+	private void viewRoom() {
+		System.out.println();
+
+		List<RoomVO> roomList = service.getRoomList();
+		System.out.println();
+		System.out.println("-----------------------------------");
+		
+		if(roomList ==null || roomList.size()==0) {
+			System.out.println("없음");
+		}else {
+			for(RoomVO roomVo : roomList) {
+				System.out.println(roomVo.getImg_link());
+				System.out.println(roomVo.getProd_id());
+				System.out.println(roomVo.getProd_price());
+				System.out.println(roomVo.getProd_add1());
+				System.out.println(roomVo.getProd_add2());
+				System.out.println();
+
+ 
+			}
+		}
+
+	}
+}

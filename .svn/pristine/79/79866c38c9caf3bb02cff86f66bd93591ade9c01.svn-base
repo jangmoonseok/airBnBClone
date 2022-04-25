@@ -1,0 +1,62 @@
+package kr.or.ddit.bnb.member.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.member.vo.FavorListVO;
+import kr.or.ddit.bnb.member.vo.MemberVO;
+import kr.or.ddit.bnb.member.vo.ReserDetailVO;
+import kr.or.ddit.bnb.member.vo.ReserListVO;
+
+public interface IMemberDao {
+	// 회원가입
+	public int insertMember(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// 로그인
+	public MemberVO getMember(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// id 중복검사
+	public int idCheck(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 아이디 찾기
+	public String findId(SqlMapClient smc, MemberVO memVo) throws SQLException;
+		
+	// 비밀번호 찾기
+	public MemberVO findPass(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// 비밀번호 재설정
+	public int updatePass(SqlMapClient smc, String memPass) throws SQLException;
+	
+	// 마이페이지/회원정보 조회
+	public MemberVO getMemberList(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 마이페이지/회원정보 수정
+	public int updateMember(SqlMapClient smc, MemberVO memVo) throws SQLException;
+	
+	// 마이페이지/회원탈퇴
+	public int deleteMember(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 마이페이지/예약내역목록
+	public List<ReserListVO> reserList(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 마이페이지/예약내역목록 이미지
+	public List<String> getImg(SqlMapClient smc, Map<String, String> map) throws SQLException;
+		
+	// 마이페이지/예약내역상세
+	public ReserDetailVO reserDetail(SqlMapClient smc, Map<String, Object> resMap) throws SQLException;
+	
+	// 마이페이지/예약내역취소
+	public int deleteReser(SqlMapClient smc, Map<String, Object> resDMap) throws SQLException;
+	
+	// 마이페이지/찜 목록
+	public List<FavorListVO> favorList(SqlMapClient smc, String memId) throws SQLException;
+	
+	// 마이페이지/찜 목록 이미지
+	public List<String> getfavImg(SqlMapClient smc, Map<String, String> fmap) throws SQLException;
+	
+	// 마이페이지/찜 삭제
+	public int deleteFavor(SqlMapClient smc, Map<String, Object> resfMap) throws SQLException;
+}

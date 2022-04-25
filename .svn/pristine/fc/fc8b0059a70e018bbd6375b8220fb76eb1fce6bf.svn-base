@@ -1,0 +1,8 @@
+package kr.or.ddit.bnb.prod.vo;
+
+public class ProdConvenVO {
+	
+	private String prod_id;
+	private String conven_id;
+
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="review">
+	<insert id="insertRev" parameterClass="revVo">
+		insert into review
+		values('rev'||trim(TO_CHAR(rev_seq.nextval, '000')),
+		(select a.reser_id
+           from reservation a, schedule b
+          where reser_stat='예약완료'
+            and a.sche_id = b.sche_id
+            and b.mem_id = #mem_id#
+            and b.prod_id = #prod_id#),
+		       #review_title#, #review_con#, #review_star#, sysdate, #prod_id#)
+	</insert>
+	
+	<delete id="deleteRev" parameterClass="String">
+		delete from review where review_id = #review_id#
+	</delete>
+
+	<update id="updateRev" parameterClass="revVo">
+		update review set review_title=#review_title#, review_con=#review_con#,
+		       review_star=#review_star#, review_date = sysdate
+		 where review_id=#review_id#
+	</update>
+	
+	<select id="selectRev" parameterClass="String" resultClass="revVO">
+		select a.review_id, a.review_title, a.review_con, a.review_date,
+		       a.review_star, a.prod_id, a.reser_id, c.mem_id
+          from review a, reservation b, schedule c
+         where a.reser_id = b.reser_id
+           and b.sche_id = c.sche_id
+           and a.prod_id = #prod_id#
+	</select>
+
+</sqlMap>

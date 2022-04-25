@@ -1,0 +1,272 @@
+package kr.or.ddit.bnb.member.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.member.dao.MemberDaoImpl;
+import kr.or.ddit.bnb.member.vo.FavorListVO;
+import kr.or.ddit.bnb.member.vo.MemberVO;
+import kr.or.ddit.bnb.member.vo.ReserDetailVO;
+import kr.or.ddit.bnb.member.vo.ReserListVO;
+import kr.or.ddit.util.SqlMapClientFactory;
+
+public class MemberServiceImpl implements IMemberService {
+	private MemberDaoImpl dao;  
+	private static MemberServiceImpl memService;
+	private SqlMapClient smc;
+
+	public MemberServiceImpl() {
+		dao = MemberDaoImpl.getInstance();
+		smc = SqlMapClientFactory.getsqlMapClient();
+	} 
+	
+	public static IMemberService getInstance() {
+		if(memService==null) memService = new MemberServiceImpl();
+		return memService;
+	}
+	
+	@Override
+	public int insertMember(MemberVO memVo) {
+		int cnt = 0;
+		try {
+			
+			cnt = dao.insertMember(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public MemberVO getMember(MemberVO memVo) {
+		MemberVO memVO = null;
+		
+		try {
+			memVO = dao.getMember(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memVO;
+	}
+
+	@Override
+	public String findId(MemberVO memVo) {
+		String memId = null;
+		
+		try {
+			memId = dao.findId(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memId;
+	}
+
+	@Override
+	public MemberVO findPass(MemberVO memVo) {
+		MemberVO memVO = null;
+		
+		try {
+			memVO = dao.findPass(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memVO;
+	}
+
+	@Override
+	public int idCheck(String memId) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.idCheck(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;	
+	}
+
+	@Override
+	public int updatePass(MemberVO memVo) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.updatePass(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public MemberVO getMemberList(String memId) {
+		MemberVO memVO = null;
+		
+		try {
+			memVO = dao.getMemberList(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memVO;
+	}
+
+	@Override
+	public int deleteMember(String memId) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.deleteMember(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int updateMember(MemberVO memVo) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.updateMember(smc, memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public ReserDetailVO reserDetail(Map<String, Object> resMap) {
+		ReserDetailVO reserDeVo = null;
+		
+		try {
+			reserDeVo = dao.reserDetail(smc, resMap);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return reserDeVo;
+	}
+
+	@Override
+	public List<ReserListVO> reserList(String memId) {
+		List<ReserListVO> reserLiVo = new ArrayList<ReserListVO>();
+		List<ReserListVO> temp = null;
+		List<String> linkList = null;
+		
+		try {
+			temp = (List<ReserListVO>) dao.reserList(smc, memId);
+			for(ReserListVO vo : temp) {
+				String prodId = vo.getProd_id();
+				Map<String, String> getImgPara = new HashMap<String, String>();
+				getImgPara.put("mem_id", memId);
+				getImgPara.put("prod_id", prodId);
+				linkList = dao.getImg(smc, getImgPara);
+				vo.setImg_link(linkList);
+				reserLiVo.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return reserLiVo;
+	}
+	
+
+	@Override
+	public int deleteReser(Map<String, Object> resDMap) {
+		int cnt = 0;
+	
+		try {
+			resDMap.put("reser_stat", "결제전");
+			cnt = dao.deleteReser(smc, resDMap);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public List<FavorListVO> favorList(String memId) {
+		List<FavorListVO> favVo = new ArrayList<FavorListVO>();
+		List<FavorListVO> temp = null;
+		List<String> linkList = null;
+		
+		try {
+			temp = (List<FavorListVO>) dao.favorList(smc, memId);
+			for(FavorListVO vo : temp) {
+				String prodId = vo.getProd_id();
+				Map<String, String> getImgPara = new HashMap<String, String>();
+				getImgPara.put("mem_id", memId);
+				getImgPara.put("prod_id", prodId);
+				linkList = dao.getfavImg(smc, getImgPara);
+				vo.setImg_link(linkList);
+				favVo.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return favVo;
+	}
+
+	@Override
+	public int deleteFavor(Map<String, Object> resfMap) {
+		int cnt = 0;
+		
+		try {
+			cnt = dao.deleteFavor(smc, resfMap);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public List<MemberVO> getAllMemberList() {
+		List<MemberVO> list = null;
+		
+		try {
+			list= dao.getAllMemberList(smc);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public MemberVO getMemberHint(String memId) {
+		MemberVO memVo = null;
+		
+		try {
+			memVo = dao.getMemberHint(smc, memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return memVo;
+	}
+
+	@Override
+	public String getEmail(String mail) {
+		String getMail = null;
+		
+		try {
+			getMail = dao.getEmail(smc, mail);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return getMail;
+	}
+	
+}

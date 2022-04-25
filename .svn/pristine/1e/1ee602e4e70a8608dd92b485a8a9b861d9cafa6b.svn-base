@@ -1,0 +1,44 @@
+package kr.or.ddit.bnb.admin.dao;
+
+public class QnAansDao {
+	
+	/**
+	 * 검색 조건에 맞는 전체 레코드 개수를 반환하는 메서드
+	 * @param smc
+	 * @return
+	 * @throws SQLException
+	 */
+	//public int getQnACount(SqlMapClient smc) throws SQLException;
+	
+	/**
+	 * QnA 게시판 등록된 질문 조회 
+	 * @param smc
+	 * @return
+	 * @throws SQLException
+	 */
+	//public List<QNAVO> SearchQnAList(SqlMapClient smc) throws SQLException;
+	
+	/**
+	 * QnA 게시판 등록된 질문 답변
+	 * @param smc
+	 * @param qnaVo
+	 * @return
+	 * @throws SQLException
+	 */
+	//public int insertQnA(SqlMapClient smc, QNAVO qnaVo) throws SQLException;
+	
+	/**
+	 * QnA 게시판 등록된 질문 삭제
+	 * @param smc
+	 * @param qna_id
+	 * @return
+	 * @throws SQLException
+	 */
+	
+	//public int deleteQnA(SqlMapClient smc, String qna_id) throws SQLException;
+	
+	
+
+	
+
+}

@@ -1,0 +1,302 @@
+@charset "UTF-8";
+
+a{
+	text-decoration: none;
+	outline: none;
+}
+
+
+.hostt{
+	cursor: pointer;
+	border: none;
+	color: white;
+	font-size: 15px;
+	font-weight: bold;
+	transition:all 0.3s;
+}
+
+.hostt:hover{
+	transform:scale(1.05);
+}
+
+#topContainer{
+	background: black;
+	color: white;
+}
+
+#logo{
+	padding: 50px;
+}
+
+#logo a{
+	display: flex;
+	align-items: center;
+	color: white;
+}
+
+#title{
+	margin-top:100px;
+	text-align: center;
+	font-size: 50px;
+	font-weight: bold;
+}
+
+#goHosting{
+	display: flex;
+	justify-content: center;
+	padding: 70px 0;
+}
+
+#goHosting button{
+	border: none;
+	background:	#FF385C;
+	border-radius: 10px;
+	padding: 15px 30px;
+	cursor: pointer;
+}
+
+#goHosting a{
+	color: white;
+}
+
+#goHosting a:hover{
+	text-decoration: none;
+}
+
+#midContainer{
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+
+#midContainer img{
+	border-radius: 20px;
+	margin: 50px;
+	width: 80%;
+}
+
+#hostHome_QnA{
+	position: absolute;
+	top: 50%;
+	display: flex;
+	justify-content: center;
+}
+
+#hostHome_QnA h2{
+	font-size: 60px;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+}
+
+#hostHome_QnA button{
+	margin-top: 50px;
+	padding: 15px 30px;
+	background: white;
+	color: black;
+	border-radius: 10px;
+	margin-left: 300px;
+}
+
+#hostHome_QnA button a{
+	color: black;
+}
+
+#hostHome_QnA button a:hover{
+	text-decoration: none;
+}
+
+/* footer */
+#footer{
+	background: #e3e2de;
+}
+
+#footer_list{
+	display: flex;
+	justify-content: center;
+	padding: 30px;
+}
+
+#footer_list li{
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+#footer_list ul{
+	margin: 10px 20px;
+}
+
+#footer_list h3{
+	font-weight: bold;
+	margin: 0 20px;
+}
+
+#footer_mark{
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+}
+/* SignUp Modal */
+.form-groupd {
+	margin-left : 40px;	 
+	margin-bottom : 15px;
+}
+
+.form-group input{
+	width: 300px;
+	display:inline-block;
+}
+
+.form-group input[type=radio]{
+	width: 50px;
+}
+
+.form-group label{
+	display:inline-block;
+	width:130px;
+}
+
+.form-check-label{
+	margin-left : 65px;
+}
+
+#findId {
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+	margin-left : 45px;
+	width : 38%;
+}
+
+#findPass{
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+	width : 38%;
+	margin-left : 10px;
+}
+
+#findId:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#findPass:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#loginId {
+	width : 80%;
+	margin-left : 45px;
+}
+
+#loginPwd {
+	width : 80%;
+	margin-left : 45px;
+}
+
+#loginBtn{
+	width : 80%;
+	height : 50px;
+	margin : 10px 45px;
+    background: #FF385C;
+    border : 1px solid white;
+    border-radius: 10px;
+}
+
+#kakaologin{
+	width : 80%;
+	height : 50px;
+	margin-top : 5px;
+	margin-left : 45px;
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+}
+
+#kakaologin:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#kakaologo{
+	float : left;
+}
+
+.hr-sect {
+        display: flex;
+        flex-basis: 100%;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.35);
+        font-size: 12px;
+        margin: 8px 0px;
+      }
+      
+.hr-sect::before, .hr-sect::after {
+        content: "";
+        flex-grow: 1;
+        background: rgba(0, 0, 0, 0.35);
+        height: 1px;
+        font-size: 0px;
+        line-height: 0px;
+        margin: 0px 16px;
+}
+      
+#signUpBtn {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 48px;
+	margin-right: 135px;
+}
+
+#naverlogin{
+	width : 80%;
+	height : 50px;
+	margin-left : 45px;
+	border : 1px solid gray;
+	background : white;
+	border-radius: 10px;
+}
+
+#naverlogin:hover {
+	text-decoration: none;
+	color: black;
+	background:#e8e7e3;
+}
+
+#findIdBtn {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 45px;
+	margin-right: 135px;
+}
+
+#findPwdBtn {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 45px;
+	margin-right: 135px;
+}
+
+#getnewpass {
+	border : 1px solid white;
+	background : #FF385C;
+	border-radius: 10px;
+	color : white;
+	width : 45%;
+	height : 45px;
+	margin-right: 135px;
+}

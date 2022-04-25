@@ -1,0 +1,68 @@
+package kr.or.ddit.bnb.reservation.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.bnb.reservation.vo.ReservationVO;
+import kr.or.ddit.bnb.reservation.vo.SchedulVO;
+
+
+public interface IReservationDao {
+	/**
+	 * 
+	 * @param smc
+	 * @param addr 
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ProdVO> locationReturn(SqlMapClient smc, String addr) throws SQLException;
+	
+	/**
+	 * 
+	 * @param smc
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ProdVO> searchProd(SqlMapClient smc, Map<String, Object> map) throws SQLException;
+	
+	/**
+	 * 
+	 * @param smc
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ProdVO> filter(SqlMapClient smc, Map<String, Object> map) throws SQLException;
+	
+	/**
+	 * 
+	 * @param smc
+	 * @param prod_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> getImg(SqlMapClient smc, String prod_id) throws SQLException;
+	
+	/**
+	 * 
+	 * @param smc
+	 * @param scheVo
+	 * @return
+	 * @throws SQLException
+	 */
+	public int insertSchedule(SqlMapClient smc, SchedulVO scheVo) throws SQLException;
+
+	/**
+	 * 
+	 * @param smc
+	 * @param reserVo
+	 * @return
+	 * @throws SQLException
+	 */
+	public int insertReservation(SqlMapClient smc, ReservationVO reserVo) throws SQLException;
+}

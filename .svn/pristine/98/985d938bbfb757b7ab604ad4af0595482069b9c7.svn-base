@@ -1,0 +1,14 @@
+package kr.or.ddit.bnb.reservation.serveice;
+
+import java.util.List;
+
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public interface IReservationService {
+	/**
+	 * 
+	 * @param addr
+	 * @return
+	 */
+	public List<ProdVO> searchLocation(String addr);
+}

@@ -1,0 +1,12 @@
+window.onload = () => {
+	
+	const userMenuList = document.querySelector('#userMenu_list');
+	const userMenuBtn = document.querySelector('.userMenu')
+	
+	const showItem = () => {
+		userMenuList.style.display = (userMenuList.style.display != 'none') ? 'none' : 'block';
+	}
+	
+	userMenuBtn.addEventListener('click', showItem);
+}
+

@@ -1,0 +1,33 @@
+package kr.or.ddit.bnb.admin.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.BuyerVO;
+import kr.or.ddit.bnb.admin.vo.HostVO;
+import kr.or.ddit.bnb.admin.vo.PickBuyerVO;
+import kr.or.ddit.bnb.admin.vo.PickHostVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public interface IManagementService {
+	
+	//회원관리 - 구매자 목록 조회
+	public List<BuyerVO> getBuyerList();
+	
+	//구매자 상세
+	public List<PickBuyerVO> getbuyer(String mem_id);
+
+	//회원관리 - 판매자 목록 조회
+	public List<HostVO> getHostList();
+	
+	//판매자 상세
+	public List<PickHostVO> getHost(String host_id);
+
+	//전체 호스트 목록 
+	public List<HostVO> getAllHostList();
+	
+	//호스트 별 등록 숙소
+	public List<ProdVO> getHostProd(String host_id);
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="reservation">
+
+	<!-- 위치검색 자동완성 -->
+	<select id="locationReturn" resultClass="prodVo" parameterClass="String">
+		select * from prod where prod_add1 like '%'||#data#||'%'
+	</select>
+	
+	<!-- 숙소 검색 -->
+	<!-- 필요한 파라미터 : 주소(String)[, 체크인 날짜(date), 체크아웃 날짜(date), 인원수(int)] -->
+	<!-- [ ]는 동적쿼리로 구현 -->
+	<select id="searchProd" resultClass="prodVo" parameterClass="map">
+		SELECT *
+		FROM PROD
+		LEFT JOIN SCHEDULE ON PROD.PROD_ID = SCHEDULE.PROD_ID 
+		WHERE PROD_ADD1 LIKE '%'||#addr#||'%'
+		
+		<isNotEmpty property="check_in">
+			AND NOT SCHEDULE.CHECK_IN BETWEEN #check_in# AND #check_out#
+			AND NOT SCHEDULE.CHECK_OUT BETWEEN #check_in# AND #check_out#
+		</isNotEmpty>	
+		
+		<isNotEmpty property="person">
+			<![CDATA[
+			AND PROD_PER >= #person#
+			]]>
+		</isNotEmpty>
+		
+	</select>
+	
+	<select id ="filter" resultClass="prodVo" parameterClass="map">
+		select *
+		from prod a,
+		(select prod.prod_id as pid
+		from prod
+		left join SCHEDULE on prod.PROD_ID = SCHEDULE.PROD_ID 
+		where PROD_ADD1 like '%'||#addr#||'%'
+		<isNotEmpty property="check_in">
+			AND NOT SCHEDULE.CHECK_IN BETWEEN #check_in# AND #check_out#
+			AND NOT SCHEDULE.CHECK_OUT BETWEEN #check_in# AND #check_out#
+		</isNotEmpty>	
+		
+		<isNotEmpty property="person">
+			<![CDATA[
+			AND PROD_PER >= #person#
+			]]>
+		</isNotEmpty>
+		) b
+		
+		where a.PROD_id = b.pid
+		
+		<isNotEmpty property="price">
+			and a.PROD_PRICE = #price#
+		</isNotEmpty>
+		
+		<isNotEmpty property="type">
+			and a.PROD_TYPE = #type#
+		</isNotEmpty>
+		
+		<isNotEmpty property="part">
+			and a.PROD_PART = #part#
+		</isNotEmpty>
+	</select>
+	
+</sqlMap>

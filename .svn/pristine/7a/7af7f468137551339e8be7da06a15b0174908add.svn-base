@@ -1,0 +1,6 @@
+# Action URI Properties File
+
+## Member
+/member/Login.ddit=kr.or.ddit.member.action.LoginAction
+/member/Logout.ddit=kr.or.ddit.member.action.LogoutAction
+/member/memberList.ddit=kr.or.ddit.commandPattern.DoCommand

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="mypage">	
+	<!-- 마이페이지/회원정보 조회 -->
+	<select id="getMemberList" resultClass="memVo" parameterClass="String">
+		SELECT * FROM MEMBER where mem_id = #mem_id#
+	</select>
+	
+	<!-- 마이페이지/회원정보 수정 -->
+	<update id="updateMember" parameterClass="memVo">
+		UPDATE MEMBER 
+		   SET MEM_PASS=#mem_pass#, MEM_EMAIL=#mem_email#, MEM_TEL=#mem_tel#,
+			   MEM_ADDR=#mem_addr#, MEM_HINT=#mem_hint#, MEM_ANS=#mem_ans#
+		WHERE MEM_ID=#mem_id# 
+	</update>
+	
+	<!-- 마이페이지/회원탈퇴 -->
+	<delete id="deleteMember" parameterClass="String">
+		DELETE FROM MEMBER WHERE MEM_ID=#mem_id#
+	</delete>
+
+	<!-- 마이페이지/예약내역목록 -->
+	<select id="reserList" parameterClass="string" resultClass="reserLVo">
+		select a.prod_id, a.prod_name, a.prod_add1, c.check_in, c.check_out, d.reser_id
+          from prod a, schedule c, reservation d
+         where a.prod_id = c.prod_id
+           and c.sche_id = d.sche_id
+           and c.mem_id = #data#
+	</select>
+	
+	<!-- 예약내역 이미지 링크 불러오기 -->
+	<select id ="getImg" resultClass="string" parameterClass="map">
+		select distinct b.IMG_LINK
+          from prod a, prod_img b, schedule c, reservation d
+         where a.prod_id = b.prod_id
+           and a.prod_id = c.prod_id
+           and c.sche_id = d.sche_id
+           and c.mem_id = #mem_id#
+           and b.prod_id = #prod_id#
+	</select>
+	
+	<!-- 마이페이지/예약내역상세 -->
+	<select id="reserDetail" parameterClass="map" resultClass="reserDVo">
+		select b.img_link, a.prod_name, e.host_id, a.prod_add1, a.prod_add2, c.check_in,
+               c.check_out, d.reser_price, d.reser_per, d.reser_stat, d.reser_date, d.reser_req
+          from prod a, prod_img b, schedule c, reservation d, host e
+         where rownum = 1
+           and c.mem_id = #mem_id#
+           and d.reser_id = #reser_id#
+           and a.prod_id = b.prod_id
+           and a.prod_id = c.prod_id
+           and c.sche_id = d.sche_id
+           and a.host_id = e.host_id
+	</select>
+	
+	<!-- 마이페이지/예약내역상세/예약변경 -->
+	<!-- <update id="" parameterClass="">
+	
+	</update> -->
+	
+	<!-- 마이페이지/예약내역상세/예약취소 -->
+	<delete id="deleteReser" parameterClass="map">
+		delete from reservation where reser_id=#reser_id# and reser_stat=#reser_stat#   
+	</delete>
+	
+	<!-- 마이페이지/찜 목록 -->
+	<select id="favorList" parameterClass="String" resultClass="favorVO">
+		select a.prod_id, b.prod_name, b.prod_add1, b.prod_price
+          from favorite a, prod b
+         where a.mem_id = #mem_id#
+           and a.prod_id = b.prod_id
+	</select>
+	
+	<!-- 찜 목록 이미지 링크 불러오기 -->
+	<select id="getfavImg" resultClass="string" parameterClass="map">
+		select distinct img_link
+          from prod a, prod_img b, favorite c
+         where c.mem_id = #mem_id#
+           and c.prod_id = #prod_id#
+           and a.prod_id = b.prod_id
+           and b.prod_id = c.prod_id
+	</select>
+	
+	<!-- 마이페이지/찜 삭제 -->
+	<delete id="deleteFavor" parameterClass="map">
+		delete from favorite
+         where mem_id = #mem_id#
+           and prod_id = #prod_id#
+	</delete>
+</sqlMap>

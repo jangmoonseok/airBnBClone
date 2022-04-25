@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+
+
+#chattingContainer{
+	width: 60%;
+	margin: 20px 0;
+}
+
+#chatting{
+	 border: 1px solid rgb(221, 221, 221);
+	 box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
+	 width: 100%;
+	 height: 70vh;
+	 position: relative;
+	 border-radius: 20px;
+}
+
+#textCon{
+	overflow: auto;
+	width: 100%;
+	height: 470px;
+}
+
+#chatting form{
+	position: absolute;
+	width:100%;
+	height:200px;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px;
+	border-top: 1px solid gray;
+	
+}
+
+#chatting form textarea{
+	width: 70%;
+	margin-left: 30px;
+	border-radius: 20px;
+}
+
+#chatSubmit{
+	border: none;
+	background: #FF385C;
+	width: 25%;
+	color: white;
+	font-size:30px;
+	font-weight: bold;
+	font-family:'Black Han Sans', sans-serif;
+	height: 126px;
+	border-radius: 20px;
+}
+
+h1{
+	font-family:'Black Han Sans', sans-serif;
+	font-size: 50px;
+}
+
+.userChatCon{
+	margin:20px;
+}
+
+.userName{
+	font-weight: bold;
+}
+
+.userChat{
+	width: 300px;
+	padding: 20px;
+	border-radius: 20px;
+	background: #f78b9e;
+	color: white;
+	font-weight:bold;
+	font-size: 20px;
+}

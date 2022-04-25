@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="room">
+	
+	<delete id="deleteRoom" parameterClass="String">
+		update prod
+  		set prod_remove='y'
+   		where prod_id = #prod_id#
+	</delete>
+	
+	<select id = "getroomList" resultClass="roomVO">
+		select *
+		from prod 
+		where accept ='y'
+		and prod_remove != 'y'
+		order by prod_id desc
+	</select>
+	
+	<select id = "room" resultClass="roomVO">
+		select a.img_link, b.prod_id,b.prod_type,b.prod_part,b.prod_add1,b.prod_add2,b.prod_name,
+        b.prod_des,b.prod_per,b.prod_date,b.prod_price,b.host_id
+        from prod_img A, prod B
+        where a.prod_id = b.prod_id   
+        and a.prod_id=#prod_id#
+	</select>
+
+	
+	<select id ="waitingRoomList" resultClass="prodVo">
+		select *
+		from prod
+		where accept='n'
+		and prod_remove !='y'
+	</select>
+	
+	<insert id="permissionRoom">
+		update prod
+   		set accept='y'
+   		where accept='n' 
+   		and prod_id=#prod_id#
+
+	</insert>
+	
+	<delete id ="denyRoom" parameterClass="String">
+	    update prod
+  		set prod_remove='y'
+   		where prod_id = #prod_id#
+	
+	</delete>
+	
+</sqlMap>

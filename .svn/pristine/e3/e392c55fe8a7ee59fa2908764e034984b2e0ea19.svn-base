@@ -1,0 +1,62 @@
+package kr.or.ddit.bnb.prod.dao;
+
+import java.sql.SQLException;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.prod.vo.ProdConvenVO;
+import kr.or.ddit.bnb.prod.vo.ProdImgVO;
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+
+public class ProdDaoImpl implements IProdDao{
+	
+	private static ProdDaoImpl dao;
+	
+	private ProdDaoImpl() {
+		
+	}
+	public static ProdDaoImpl getInstance() {
+		if(dao==null)dao=new ProdDaoImpl();
+		
+		return dao;
+	}
+
+	@Override
+	public int insertProd(SqlMapClient smc, ProdVO prodVo) throws SQLException {
+       int cnt=0;
+       
+       
+		Object obj= smc.insert("prod.insertProd",prodVo);
+       if(obj==null) cnt=1;
+       
+       return cnt;
+		 
+	}
+
+	@Override
+	public int insertProdImg(SqlMapClient smc, ProdImgVO prodimgVo) throws SQLException {
+		
+	    int cnt=0;
+	       
+	       
+			Object obj= smc.insert("prod.insertProdImg",prodimgVo);
+	       if(obj==null) cnt=1;
+	       
+	       return cnt;
+	}
+	@Override
+	public int insertProdConven(SqlMapClient smc, ProdConvenVO prodconvenVo) throws SQLException {
+		
+		
+		int cnt=0;
+	       
+	       
+		Object obj=smc.insert("prod.insertProdConven",prodconvenVo);
+       if(obj==null) cnt=1;
+       
+       return cnt;
+	}
+	
+	
+
+}

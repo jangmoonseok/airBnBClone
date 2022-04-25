@@ -1,0 +1,32 @@
+package kr.or.ddit.bnb.admin.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.bnb.admin.vo.RoomVO;
+
+public interface IviewRoomDao {
+
+	//숙소관리-숙소조회-숙소삭제
+	
+		//숙소삭제
+		public int deleteRoom(SqlMapClient smc, String prod_id) throws SQLException;
+		
+		//숙소조회
+		public List<RoomVO> getRoomList(SqlMapClient smc) throws SQLException;
+
+
+		//등록요청된 숙소 조회
+		public List<RoomVO> waitingRoomList(SqlMapClient smc) throws SQLException;
+		
+		//등록 승인
+		public int permissionRoom(SqlMapClient smc, RoomVO roomVo) throws SQLException;
+		
+		//등록 거절
+		public int denyRoom(SqlMapClient smc ,String prod_id) throws SQLException;
+
+		
+
+}

@@ -1,0 +1,44 @@
+package kr.or.ddit.bnb.reservation.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import kr.or.ddit.bnb.prod.vo.ProdVO;
+import kr.or.ddit.bnb.reservation.serveice.IReservationService;
+import kr.or.ddit.bnb.reservation.serveice.ReservationServiceImpl;
+
+/**
+ * Servlet implementation class GetProdDetail
+ */
+@WebServlet("/getProdDetail.do")
+public class GetProdDetail extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json; utf-8");
+		request.setCharacterEncoding("utf-8");
+		
+		String prod_id = request.getParameter("prod_id");
+		
+		IReservationService service = ReservationServiceImpl.getInstance();
+		ProdVO prodDetail = service.getProdDetail(prod_id);
+		
+		Gson gson = new Gson();
+		String detail = gson.toJson(prodDetail);
+		
+		PrintWriter out = response.getWriter();
+		
+		out.print(detail);
+		out.flush();
+	}
+
+}

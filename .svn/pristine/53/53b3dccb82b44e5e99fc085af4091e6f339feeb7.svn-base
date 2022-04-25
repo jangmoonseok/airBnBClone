@@ -1,0 +1,55 @@
+package kr.or.ddit.bnb.payment.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import kr.or.ddit.bnb.reservation.serveice.IReservationService;
+import kr.or.ddit.bnb.reservation.serveice.ReservationServiceImpl;
+
+/**
+ * Servlet implementation class PayTest
+ */
+@WebServlet("/payTest.do")
+public class PayTest extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json; charset=utf-8");
+		
+		String imp_uid = request.getParameter("imp_uid");
+		String merchant_uid = request.getParameter("merchant_uid");
+		
+		String mem_id = request.getParameter("mem_id");
+		
+		System.out.println(imp_uid);
+		System.out.println(merchant_uid);
+		
+		IReservationService service = ReservationServiceImpl.getInstance();
+		int insertPayment = service.insertPayment(mem_id, imp_uid);
+		
+		Gson gson = new Gson();
+		
+		String reser = gson.toJson(insertPayment);
+		
+		PrintWriter out = response.getWriter();
+		out.print(reser);
+		out.flush();
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

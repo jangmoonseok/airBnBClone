@@ -1,0 +1,44 @@
+package kr.or.ddit.bnb.member.service;
+
+import java.util.List;
+import java.util.Map;
+
+import kr.or.ddit.bnb.member.vo.MemberVO;
+import kr.or.ddit.bnb.member.vo.ReserDetailVO;
+import kr.or.ddit.bnb.member.vo.ReserListVO;
+
+public interface IMemberService {
+	// 회원가입
+	public int insertMember(MemberVO memVo);
+	
+	// 로그인
+	public MemberVO getMember(MemberVO memVo);
+	
+	// id 중복검사
+	public int idCheck(String memId);
+	
+	// 아이디 찾기
+	public String findId(MemberVO memVo);
+	
+	// 비밀번호 찾기
+	public MemberVO findPass(MemberVO memVo);
+	
+	// 비밀번호 재설정
+	public int updatePass(String memPass);
+	
+	// 마이페이지/회원정보 조회
+	public MemberVO getMemberList(String memId);
+	
+	// 마이페이지/회원정보 수정
+	public int updateMember(MemberVO memVo);
+	
+	// 마이페이지/회원탈퇴
+	public int deleteMember(String memId);
+	
+	// 마이페이지/예약내역목록
+	public List<ReserListVO> reserList(String memId);
+	
+	// 마이페이지/예약내역상세
+	public ReserDetailVO reserDetail(Map<String, Object> resMap);
+
+}
