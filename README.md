@@ -5,8 +5,8 @@
 * 개발기간 : 2022-04-11 ~ 2022-04-22
 
 ## 사용기술
-* BackEnd : JSP/Servlet
-* FrontEnd : javascript, Jquery
+* BackEnd : Java Servlet
+* FrontEnd : javascript, Jquery, JSP
 * 버전관리/배포 : svn
 * DB : Oracle, iBatis
 
