@@ -17,7 +17,7 @@ JSP/Servlet을 배워 DB를 연동해 데이터를 출력하는 수업을 배워
 ## 개발
 ### 메인페이지 - 연관검색 자동완성기능, 이전 검색기록기능
 ![메인페이지](https://user-images.githubusercontent.com/64582209/184784036-ea9033c5-0659-44ae-a4a9-3886271f30f5.png)
-### 로그인화면
+### 로그인화면 - 카카오/네이버 로그인 API
 ![로그인화면](https://user-images.githubusercontent.com/64582209/184787580-61d3261a-b71c-467d-adc3-4d215abe309c.JPG)
 
 ### 검색결과페이지 - 예약내역없는 날짜필터기능, 가격&평점&숙소유형별 필터기능, 네이버지도API
