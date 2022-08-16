@@ -6,7 +6,7 @@ JSP/Servlet을 배워 DB를 연동해 데이터를 출력하는 수업을 배워
 * 개발기간 : 2022-04-11 ~ 2022-04-22
 
 ## 사용기술
-* BackEnd : Java Servlet
+* BackEnd : Java Servlet, Apache Tomcat
 * FrontEnd : javascript, Jquery, JSP
 * 버전관리/배포 : svn
 * DB : Oracle, iBatis
@@ -17,182 +17,9 @@ JSP/Servlet을 배워 DB를 연동해 데이터를 출력하는 수업을 배워
 ## 개발
 ### 메인페이지 - 연관검색 자동완성기능, 이전 검색기록기능
 ![메인페이지](https://user-images.githubusercontent.com/64582209/184784036-ea9033c5-0659-44ae-a4a9-3886271f30f5.png)
-* 검색기능 소스코드
-```
-$('.searchBtn').click(function(){
-		if($('#where').val().trim() != ""){			
-			searchSubmit();
-		}
-	})
-	
-	const searchSubmit = () => {
-		where = $('#where').val().trim();
-		
-		
-		if(searchHistory.length == 0){
-			searchHistory.push(where);			
-		}else{
-			if(searchHistory.indexOf(where) == -1){
-				if(searchHistory.length >= 4){
-					searchHistory.shift();
-					searchHistory.push(where);
-				}else{
-					searchHistory.push(where);
-				}					
-			}
-		}
-		
-		saveHistory();
-	} 
-	
-	const saveHistory = () => {
-		sessionStorage.setItem("history", JSON.stringify(searchHistory));
-	}
-	historyObj = JSON.parse(sessionStorage.getItem("history"));
-	
-	if(historyObj != null){		
-		historyObj.forEach((item) => {		
-			searchHistory.push(item);
-			const historyItem = document.createElement('li');
-			const historyImg = document.createElement('span');
-			const historyText = document.createElement('span');
-			historyImg.classList.add("material-icons");
-			historyImg.classList.add("historyIcon");
-			historyImg.innerText = "schedule";
-			historyText.classList.add("historyText")
-			historyText.innerText = item;
-			
-			historyItem.addEventListener('click', function(e){
-				$('#where').val($('.historyText', this).text());
-				hideSearchHis();
-				checkInput();
-			})
-			
-			historyItem.appendChild(historyImg);
-			historyItem.appendChild(historyText);
-			document.querySelector('#searchHistoryList').appendChild(historyItem);
-		})
-	}
-	
-	$('.searchWhere').click(function(){		
-		if($('#where').val().trim() == ""){			
-			if(searchHistory.length > 0){
-				showSearchHis();
-			}
-		}
-	})
-	
-	const historyList = document.querySelector('#searchHistory');
-	
-	const showSearchHis = () => {
-		historyList.style.display = 'block';
-	}
-	
-	const hideSearchHis = () => {		
-		historyList.style.display = 'none';
-	}
-	
-	$('#searchHisClose').click(function(){
-		hideSearchHis();
-	})
-	
+### 로그인화면
+![로그인화면](https://user-images.githubusercontent.com/64582209/184787580-61d3261a-b71c-467d-adc3-4d215abe309c.JPG)
 
-/* --------------------------------------------------------------------------------------------------------------- */
-
-	/* searchAuto */
-	
-	const autoSearchCon = document.querySelector("#autoSearchContainer");
-	const searchInput = document.querySelector('#where');
-	const autoSearchList = document.querySelector('#autoSearchList');
-	
-	const checkInput = () => {
-		const beforeVal = searchInput.value.trim();
-		timerCheck(beforeVal);
-	}
-	
-	const timerCheck = (beforeVal) => {
-		setTimeout(() => {
-			if(searchInput.value.trim() === beforeVal){
-				if(searchInput.value.trim() != ""){				
-					loadData(searchInput.value.trim());
-				}
-			}else{
-				checkInput();
-			}
-			
-			if(searchInput.value.trim() == ""){
-				autoSearchCon.style.display = 'none';
-			}
-		}, 500)
-	}
-	
-	const loadData = (inputVal) => {
-		$.ajax({
-			url : '/dditBnb/autoSearch.do',
-			type : 'post',
-			data : {
-				"addr" : inputVal
-			},
-			success : function(res){
-				if(res.length != 0 ){					
-					setResult(res);
-					autoSearchCon.style.display = 'block';
-				}
-			},
-			error : function(xhr){
-				alert("상태 : " + xhr.status)
-			},
-			dataType : 'json'
-		})
-	}
-	
-	
-	
-	let autoSearchResult = new Array();
-	const setResult = (res) => {
-		res.forEach((item) => {
-			let addr = item.prod_add1;
-			const result = addr.split(" ", 2);
-			addr = result[0] + " " +  result[1];
-			
-			if(autoSearchResult.indexOf(addr) == -1){
-				autoSearchResult.push(addr);
-			}
-
-		})
-		outPrint();
-		autoSearchResult.splice(0, autoSearchResult.length);
-	}
-	
-	const outPrint = () => {
-		if(autoSearchResult.length > 0){
-			autoSearchList.innerHTML = "";		
-			autoSearchResult.forEach((item) => {				
-				const autoSearchItem = document.createElement('li');
-				const autoSearchImg = document.createElement('span');
-				const autoSearchText = document.createElement('span');
-				autoSearchImg.classList.add("material-icons");
-				autoSearchImg.classList.add("autoSearchIcon");
-				autoSearchImg.innerText = "room";
-				
-				
-				autoSearchText.innerText = item;
-				autoSearchText.classList.add('autoItem');
-				
-				autoSearchItem.classList.add('autoSearchItem');
-				autoSearchItem.appendChild(autoSearchImg);
-				autoSearchItem.appendChild(autoSearchText);
-				
-				autoSearchList.appendChild(autoSearchItem);
-			})	
-		}
-	}
-	
-	searchInput.addEventListener('input', function(){
-		hideSearchHis();		
-		checkInput();
-	});
- ```
 ### 검색결과페이지 - 예약내역없는 날짜필터기능, 가격&평점&숙소유형별 필터기능, 네이버지도API
 ![검색결과](https://user-images.githubusercontent.com/64582209/184784086-4c792034-c8ad-4036-a4b0-c406e95dadfc.png)
 ### 숙소상세정보페이지 - 일정에따른 결제가격출력기능
@@ -203,3 +30,6 @@ $('.searchBtn').click(function(){
 ![마이페이지](https://user-images.githubusercontent.com/64582209/184784245-a3cc4081-fdfd-4ad5-ab8a-8715b878d6a3.png)
 ### 내숙소페이지 - 내가 호스팅한 숙소목록&상세정보 기능, 일정이예약된 숙소관리기능
 ![숙소페이지](https://user-images.githubusercontent.com/64582209/184784365-a55825c8-9bf0-4a0c-82c8-882014865714.png)
+
+## 느낀점
+2주라는 기간동안 설계부터 개발까지 완료해야하는 촉박한 시간이어서 체계적이고 깨끗한 코드로 개발하지는 못했지만 Apache Tomcat을 이용한 서버를 구축하고 http프로토콜 통신의 개념을 이해했고, 다양한 Open API를 이용해볼수 있었던 경험이었습니다.
