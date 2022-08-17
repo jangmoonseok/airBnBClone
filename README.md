@@ -15,6 +15,7 @@ JSP/Servlet을 배워 DB를 연동해 데이터를 출력하는 수업을 배워
  ![05 논리ERD](https://user-images.githubusercontent.com/64582209/184781371-c2e74c0d-fda9-4075-a39d-8902ea0bf159.png)
 
 ## 개발
+* 초급티가 많이나는 코드이기때문에 소스코드가 없는점 양해부탁드립니다.:cry:
 ### 메인페이지 - 연관검색 자동완성기능, 이전 검색기록기능
 ![메인페이지](https://user-images.githubusercontent.com/64582209/184784036-ea9033c5-0659-44ae-a4a9-3886271f30f5.png)
 ### 로그인화면 - 카카오/네이버 로그인 API
